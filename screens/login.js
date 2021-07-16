@@ -4,7 +4,7 @@ import { StyleSheet, SafeAreaView, Platform, Text, Button, Alert, View, Image } 
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 
-customFonts = {
+const customFonts = {
   'Rancho_400Regular': require('../assets/fonts/Rancho-Regular.ttf'),
 };
 
