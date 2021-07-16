@@ -1,4 +1,6 @@
 import React from 'react';
+import { NavigationContainer } from '@react-navigation/native'
+import Tabs from './navigation/navigation'
 import Login from './screens/login'
 import Dashboard from './screens/dashboard'
 
@@ -19,7 +21,7 @@ export default class App extends React.Component {
   );
 } else {
   return (
-    <Dashboard />
+    <NavigationContainer><Tabs /></NavigationContainer>
   );
 }
   }
