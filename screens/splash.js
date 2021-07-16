@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, View, Text, Image, Button } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NavigationContainer } from '@react-navigation/native';
+import Tabs from '../navigation/navigation';
 
 const Splash = () => {
   const [showRealApp, setShowRealApp] = useState(false);
   const onDone = () => {
+    AsyncStorage.setItem('isAppLoaded',"yes");
     setShowRealApp(true);
   };
   const onSkip = () => {
+    AsyncStorage.setItem('isAppLoaded',"yes");
     setShowRealApp(true);
   };
 
@@ -31,21 +36,7 @@ const Splash = () => {
   return (
     <>
       {showRealApp ? (
-        <SafeAreaView style={styles.container}>
-          <View style={styles.container}>
-            <Text style={styles.titleStyle}>
-              React Native App Intro Slider using AppIntroSlider
-            </Text>
-            <Text style={styles.paragraphStyle}>
-              This will be your screen when you click Skip from any slide or
-              Done button at last
-            </Text>
-            <Button
-              title="Show Intro Slider again"
-              onPress={() => setShowRealApp(false)}
-            />
-          </View>
-        </SafeAreaView>
+        <NavigationContainer><Tabs /></NavigationContainer>
       ) : (
         <AppIntroSlider
           data={slides}
