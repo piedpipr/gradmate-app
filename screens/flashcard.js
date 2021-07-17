@@ -1,7 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import { Center } from 'native-base';
 import React from 'react';
-import { View, SafeAreaView, StyleSheet, Animated, Button, TouchableWithoutFeedback, Text } from 'react-native';
+import { View, SafeAreaView, StyleSheet, Animated, Button, Platform, TouchableWithoutFeedback, Text } from 'react-native';
 
 export function FlashCard () {
 
@@ -97,10 +96,13 @@ export default class Flashcard extends React.Component {
 render(){
   return(
     <><FlashCard />
+    <View style={ styles.buttons }>
+    <Button title='Previous' onPress={() => FlashCard.flipCard()}/>
     <Button title='Flip' onPress={() => FlashCard.flipCard()}/>
+    <Button title='Next' onPress={() => FlashCard.flipCard()}/>
+    </View>
     </>
-
-  )
+    );
 }
 }
 
@@ -122,7 +124,6 @@ const styles = StyleSheet.create({
       borderRadius: 5,
       marginBottom: 15,
       zIndex: 2,
-
     },
     paperBack : {
       position: 'absolute',
@@ -133,8 +134,11 @@ const styles = StyleSheet.create({
       minWidth: '90%',
       borderRadius: 5,
       marginBottom: 15,
-
-
     },
+    buttons: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      backgroundColor: "white",
+    }
 });
 

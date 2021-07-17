@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NavigationContainer } from '@react-navigation/native';
-import Tabs from '../navigation/navigation';
+import FlashcardScreen from '../screens/flashcard'
 
 const Splash = () => {
   const [showRealApp, setShowRealApp] = useState(false);
@@ -26,6 +25,7 @@ const Splash = () => {
           justifyContent: 'space-around',
           paddingBottom: 100,
         }}>
+        <FlashcardScreen />
         <Text style={styles.introTitleStyle}>{item.title}</Text>
         <Image style={styles.introImageStyle} source={item.image} />
         <Text style={styles.introTextStyle}>{item.text}</Text>
@@ -34,19 +34,13 @@ const Splash = () => {
   };
 
   return (
-    <>
-      {showRealApp ? (
-        <NavigationContainer><Tabs /></NavigationContainer>
-      ) : (
-        <AppIntroSlider
+    <AppIntroSlider
           data={slides}
           renderItem={RenderItem}
           onDone={onDone}
           showSkipButton={true}
           onSkip={onSkip}
         />
-      )}
-    </>
   );
 };
 
