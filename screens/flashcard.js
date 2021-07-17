@@ -1,10 +1,33 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { View, SafeAreaView, StyleSheet, Animated, Button, Platform, TouchableWithoutFeedback, Text } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Button, View, Text, Image, TouchableWithoutFeedback, Animated, } from 'react-native';
+import AppIntroSlider from 'react-native-app-intro-slider';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export function FlashCard () {
+const FlashCard = () => {
+  const [showRealApp, setShowRealApp] = useState(false);
+  const onDone = () => {
+    AsyncStorage.setItem('isAppLoaded',"yes");
+    setShowRealApp(true);
+  };
+  const onSkip = () => {
+    AsyncStorage.setItem('isAppLoaded',"yes");
+    setShowRealApp(true);
+  };
 
-        let animatedValue = new Animated.Value(0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+  let animatedValue = new Animated.Value(0);
         let val = 0;
 
         animatedValue.addListener(({ value }) => {
@@ -72,73 +95,179 @@ export function FlashCard () {
         }
 
 
+   const RenderItem = ({ item }) => {
     return (
       <TouchableWithoutFeedback onPress={() =>flipCard()} >
-          <View style={ styles.container }>
-                <Animated.View style={[frontAnimatedStyle, styles.paperFront, {elevation: elevationFront}, {opacity: frontOpacity}]}>
-                  <Text style={{fontSize: 20,paddingTop: 8, paddingLeft: 8, color: 'black',lineHeight: 20}}>
-                    Given Word {val} - <Text style={{fontSize: 8}}>KPI</Text>
-                  </Text>
-                </Animated.View>
+        <View
+        style={{
+          flex: 1,
+          backgroundColor: item.backgroundColor,
+          alignItems: 'center',
+          justifyContent: 'space-around',
+          paddingBottom: 100,
+        }}>
+        <View style={ styles.containerSm }>
+            <Animated.View style={[frontAnimatedStyle, styles.paperFront, {elevation: elevationFront}, {opacity: frontOpacity}]}>
+              <Text style={{fontSize: 20,paddingTop: 8, paddingLeft: 8, color: 'black',lineHeight: 20}}>
+                Given Word {item.title} - <Text style={{fontSize: 8}}>KPI</Text>
+              </Text>
+              <Image style={styles.introImageStyle} source={item.image} />
+              <Text style={styles.introTextStyle}>{item.text}</Text>
+            </Animated.View>
 
-                <Animated.View style={[backAnimatedStyle, styles.paperBack, {elevation: elevationBack}, {opacity: backOpacity}]}>
-                  <Text style={{fontSize: 20,paddingTop: 8, paddingLeft: 8, color: 'black',lineHeight: 20}}>
-                    Word Meaning {val} - <Text style={{fontSize: 8}}>KPI</Text>
-                  </Text>
-                </Animated.View>
-            </View>
+            <Animated.View style={[backAnimatedStyle, styles.paperBack, {elevation: elevationBack}, {opacity: backOpacity}]}>
+              <Text style={{fontSize: 20,paddingTop: 8, paddingLeft: 8, color: 'black',lineHeight: 20}}>
+                Word Meaning {val} - <Text style={{fontSize: 8}}>KPI</Text>
+              </Text>
+            </Animated.View>
+          </View>
+          </View>
       </TouchableWithoutFeedback>
+      
     );
-}
+  };
 
+  return (
+    <AppIntroSlider
+          data={slides}
+          renderItem={RenderItem}
+          onDone={onDone}
+          showSkipButton={true}
+          onSkip={onSkip}
+        />
+  );
+};
 
-export default class Flashcard extends React.Component {
-render(){
-  return(
-    <><FlashCard />
-    <View style={ styles.buttons }>
-    <Button title='Previous' onPress={() => FlashCard.flipCard()}/>
-    <Button title='Flip' onPress={() => FlashCard.flipCard()}/>
-    <Button title='Next' onPress={() => FlashCard.flipCard()}/>
-    </View>
-    </>
-    );
-}
-}
+export default FlashCard;
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: 'white',
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    },
-    paperFront : {
-      position: 'absolute',
-      justifyContent: 'flex-start',
-      marginHorizontal: 15,
-      backgroundColor: "white",
-      height: '65%',
-      minWidth: '90%',
-      borderRadius: 5,
-      marginBottom: 15,
-      zIndex: 2,
-    },
-    paperBack : {
-      position: 'absolute',
-      justifyContent: 'flex-start',
-      marginHorizontal: 15,
-      backgroundColor: "white",
-      height: '65%',
-      minWidth: '90%',
-      borderRadius: 5,
-      marginBottom: 15,
-    },
-    buttons: {
-      flexDirection: 'row',
-      justifyContent: 'center',
-      backgroundColor: "white",
-    }
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    padding: 10,
+    justifyContent: 'center',
+  },
+  titleStyle: {
+    padding: 10,
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  paragraphStyle: {
+    padding: 20,
+    textAlign: 'center',
+    fontSize: 16,
+  },
+  introImageStyle: {
+    width: 200,
+    height: 200,
+  },
+  introTextStyle: {
+    fontSize: 18,
+    color: 'white',
+    textAlign: 'center',
+    paddingVertical: 30,
+  },
+  introTitleStyle: {
+    fontSize: 25,
+    color: 'white',
+    textAlign: 'center',
+    marginBottom: 16,
+    fontWeight: 'bold',
+  },
+
+
+
+
+  containerSm: {
+    flex: 1,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  paperFront : {
+    position: 'absolute',
+    justifyContent: 'flex-start',
+    marginHorizontal: 15,
+    backgroundColor: "white",
+    height: '65%',
+    minWidth: '90%',
+    borderRadius: 5,
+    marginBottom: 15,
+    zIndex: 2,
+  },
+  paperBack : {
+    position: 'absolute',
+    justifyContent: 'flex-start',
+    marginHorizontal: 15,
+    backgroundColor: "white",
+    height: '65%',
+    minWidth: '90%',
+    borderRadius: 5,
+    marginBottom: 15,
+  },
 });
 
+const slides = [
+  {
+    key: 's1',
+    text: 'Curated Vocabs',
+    title: 'Best collections at the same place',
+    image: {
+      uri:
+        'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_mobile_recharge.png',
+    },
+    backgroundColor: '#20d2bb',
+  },
+  {
+    key: 's2',
+    title: 'Visualization',
+    text: 'Added image to the vocabularies',
+    image: {
+      uri:
+        'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_flight_ticket_booking.png',
+    },
+    backgroundColor: '#febe29',
+  },
+  {
+    key: 's3',
+    title: 'Mnemonics',
+    text: 'Remember easily',
+    image: {
+      uri:
+        'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_discount.png',
+    },
+    backgroundColor: '#22bcb5',
+  },
+  {
+    key: 's4',
+    title: 'Your companion',
+    text: ' GRE, IELTS, GMAT',
+    image: {
+      uri:
+        'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_best_deals.png',
+    },
+    backgroundColor: '#3395ff',
+  },
+  {
+    key: 's5',
+    title: 'Dummy',
+    text: 'Hello',
+    image: {
+      uri:
+        'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_bus_ticket_booking.png',
+    },
+    backgroundColor: '#f6437b',
+  },
+  {
+    key: 's6',
+    title: 'Last Page',
+    text: ' Last',
+    image: {
+      uri:
+        'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_train_ticket_booking.png',
+    },
+    backgroundColor: '#febe29',
+  },
+];

@@ -2,8 +2,6 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Tabs from './navigation/navigation';
-import Login from './screens/login';
-import Dashboard from './screens/dashboard';
 import Splash from './screens/splash';
 
 

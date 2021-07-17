@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "gradmate",
-    "slug": "gradmate",
+    "name": "GradMate",
+    "description": "Daily Driver for Vocabulary, Flashcard, Quiz and Higher Study Resources",
+    "slug": "piedpipr-gradmate",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -20,6 +21,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.piedpipr.gradmate",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
