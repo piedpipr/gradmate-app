@@ -10,22 +10,31 @@ export default class App extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      isAppLoaded: false,
+      isAppLoaded: null
       
     }
   }
 
   render() {
-        const value = AsyncStorage.getItem('isAppLoaded')
-        if(value !== "yes") {
-          return (
-            <Splash />
-          );
-        } else {
-          return (
-            <NavigationContainer><Tabs /></NavigationContainer>
-          );
+    const valuePromise = AsyncStorage.getItem('isLoaded');
+    valuePromise.then((value) => {
+      if ( this.state.isAppLoaded == null ){
+        if ( value != null ){
+          this.setState({ isAppLoaded: value });
         }
+      }
+      
+    });
+
+      if(this.state.isAppLoaded) {
+      return (
+        <NavigationContainer><Tabs /></NavigationContainer>
+      );
+    } else {
+      return (
+        <Splash />
+      );
+    }
   } 
 }
   

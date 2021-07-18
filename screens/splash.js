@@ -8,11 +8,13 @@ import Tabs from '../navigation/navigation';
 const Splash = () => {
   const [showRealApp, setShowRealApp] = useState(false);
   const onDone = () => {
-    AsyncStorage.setItem('isAppLoaded',"yes");
+    const status = "yes";
+    AsyncStorage.setItem('isLoaded', status);
     setShowRealApp(true);
   };
   const onSkip = () => {
-    AsyncStorage.setItem('isAppLoaded',"yes");
+    const status = "yes";
+    AsyncStorage.setItem('isLoaded', status);
     setShowRealApp(true);
   };
 
