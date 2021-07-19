@@ -14,19 +14,6 @@ const FlashCard = () => {
     setShowRealApp(true);
   };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
   let animatedValue = new Animated.Value(0);
         let val = 0;
 
@@ -95,13 +82,15 @@ const FlashCard = () => {
         }
 
 
-   const RenderItem = ({ item }) => {
+  const RenderItem = ({ item }) => {
+    var myColors = ['#febe29', '#3395ff', '#22bcb5', '#f6437b'];
+    const bgColor = myColors[Math.floor(Math.random() * myColors.length)];
     return (
       <TouchableWithoutFeedback onPress={() =>flipCard()} >
         <View
         style={{
           flex: 1,
-          backgroundColor: item.backgroundColor,
+          backgroundColor: bgColor,
           alignItems: 'center',
           justifyContent: 'space-around',
           paddingBottom: 100,
@@ -117,7 +106,7 @@ const FlashCard = () => {
 
             <Animated.View style={[backAnimatedStyle, styles.paperBack, {elevation: elevationBack}, {opacity: backOpacity}]}>
               <Text style={{fontSize: 20,paddingTop: 8, paddingLeft: 8, color: 'black',lineHeight: 20}}>
-                Word Meaning {val} - <Text style={{fontSize: 8}}>KPI</Text>
+                Word Meaning {item.meaning}{val} - <Text style={{fontSize: 8}}>KPI</Text>
               </Text>
             </Animated.View>
           </View>
@@ -211,63 +200,94 @@ const styles = StyleSheet.create({
 
 const slides = [
   {
-    key: 's1',
+    key: 'w1',
     text: 'Curated Vocabs',
     title: 'Best collections at the same place',
+    meaning: 'Hello World',
     image: {
       uri:
         'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_mobile_recharge.png',
     },
-    backgroundColor: '#20d2bb',
   },
   {
-    key: 's2',
+    key: 'w2',
     title: 'Visualization',
     text: 'Added image to the vocabularies',
     image: {
       uri:
         'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_flight_ticket_booking.png',
     },
-    backgroundColor: '#febe29',
   },
   {
-    key: 's3',
+    key: 'w3',
     title: 'Mnemonics',
     text: 'Remember easily',
     image: {
       uri:
         'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_discount.png',
     },
-    backgroundColor: '#22bcb5',
   },
   {
-    key: 's4',
+    key: 'w4',
     title: 'Your companion',
     text: ' GRE, IELTS, GMAT',
     image: {
       uri:
         'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_best_deals.png',
     },
-    backgroundColor: '#3395ff',
   },
   {
-    key: 's5',
+    key: 'w5',
     title: 'Dummy',
     text: 'Hello',
     image: {
       uri:
         'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_bus_ticket_booking.png',
     },
-    backgroundColor: '#f6437b',
   },
   {
-    key: 's6',
+    key: 'w6',
     title: 'Last Page',
     text: ' Last',
     image: {
       uri:
         'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_train_ticket_booking.png',
     },
-    backgroundColor: '#febe29',
+  },
+  {
+    key: 'w7',
+    title: 'Last Page',
+    text: ' Last',
+    image: {
+      uri:
+        'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_train_ticket_booking.png',
+    },
+  },
+  {
+    key: 'w8',
+    title: 'Last Page',
+    text: ' Last',
+    image: {
+      uri:
+        'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_train_ticket_booking.png',
+    },
+  },
+  {
+    key: 'w9',
+    title: 'Last Page',
+    text: ' Last',
+    image: {
+      uri:
+        'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_train_ticket_booking.png',
+    },
+  },
+  {
+    key: 'w10',
+    title: 'Last Page',
+    text: ' Last',
+    image: {
+      uri:
+        'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_train_ticket_booking.png',
+    },
   },
 ];
