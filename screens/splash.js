@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NavigationContainer } from '@react-navigation/native';
-import Tabs from '../navigation/navigation';
+import Login from './login';
 
 const Splash = () => {
   const [showRealApp, setShowRealApp] = useState(false);
@@ -38,7 +37,7 @@ const Splash = () => {
   return (
     <>
       {showRealApp ? (
-        <NavigationContainer><Tabs /></NavigationContainer>
+        <Login />
       ) : (
         <AppIntroSlider
           data={slides}

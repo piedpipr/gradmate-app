@@ -1,12 +1,29 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, SafeAreaView, Platform, Text, Button, Alert, View, Image } from 'react-native';
+import * as Font from 'expo-font';
 
+const customFonts = {
+  'Rancho_400Regular': require('../assets/fonts/Rancho-Regular.ttf'),
+};
 
 const Separator = () => <View style={styles.separator} />;
 
-export default class Login extends React.Component {
+export default class Dashboard extends React.Component {
   
+  state = {
+    fontsLoaded: false,
+  };
+
+  async _loadFontsAsync() {
+    await Font.loadAsync(customFonts);
+    this.setState({ fontsLoaded: true });
+  }
+
+  componentDidMount() {
+    this._loadFontsAsync();
+  }
+
   render() {
       return (
         <SafeAreaView style={styles.container}>

@@ -1,64 +1,48 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, SafeAreaView, Platform, Text, Button, Alert, View, Image } from 'react-native';
-import AppLoading from 'expo-app-loading';
-import * as Font from 'expo-font';
+import * as React from 'react';
+import { Button, StyleSheet, StatusBar, Platform } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
+import { ResponseType } from 'expo-auth-session';
+import * as Google from 'expo-auth-session/providers/google';
+import firebase from 'firebase';
+import { firebaseConfig } from '../config/keys';
 
-const customFonts = {
-  'Rancho_400Regular': require('../assets/fonts/Rancho-Regular.ttf'),
-};
+!firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
 
-const Separator = () => <View style={styles.separator} />;
 
-export default class Login extends React.Component {
-  state = {
-    fontsLoaded: false,
-  };
+WebBrowser.maybeCompleteAuthSession();
 
-  async _loadFontsAsync() {
-    await Font.loadAsync(customFonts);
-    this.setState({ fontsLoaded: true });
-  }
 
-  componentDidMount() {
-    this._loadFontsAsync();
-  }
-  render() {
-    if (this.state.fontsLoaded) {
-      return (
-        <SafeAreaView style={styles.container}>
-          <View style={styles.title}>
-            <Text style={{ fontFamily: 'Rancho_400Regular', fontSize: 80, color: 'red' }}>GradMate</Text>
-            <Image
-              source={require('../assets/home.gif')}
-              style={{ width: 350, height: 350 }} />
-            <Text style={{ fontWeight: 'bold', fontSize: 18, color: '#219ebc' }}>Welcome to Gradmate</Text>
-          </View>
-          <Separator />
-          <View style={styles.buttons}>
-            <Button
-              marginRight='190px'
-              color='#219ebc'
-              title="Login with Google"
-              onPress={() => Alert.alert('Simple Button pressed')} />
-            <Separator />
-            <Button
-              color='#fb8500'
-              title="Continue Without Login"
-              onPress={() => Alert.alert('Simple Button pressed')} />
-          </View>
-          <Separator />
-          <View style={{ marginHorizontal: 25, marginBottom: -100 }} ><Text style={{ textAlign: 'center', fontSize: 13, color: '#219ebc' }}>Please login with Gmail to save your progress.{"\n"}Otherwise select continue without log in to use the app</Text></View>
-          <StatusBar style="auto" />
-        </SafeAreaView>
-      );
-    } else {
-      return <AppLoading />;
+
+
+export default function Login() {
+
+  const [request, response, promptAsync] = Google.useIdTokenAuthRequest(
+    {
+      behavior: 'web',
+      clientId: '649180399183-eet93ekgq2ae6alkhpf8gl6hgonn411n.apps.googleusercontent.com',
+      },
+  );
+
+  React.useEffect(() => {
+    if (response?.type === 'success') {
+      const { id_token } = response.params;
+      
+      const credential = firebase.auth.GoogleAuthProvider.credential(id_token);
+      firebase.auth().signInWithCredential(credential);
     }
-  }
+  }, [response]);
+
+  return (
+    <Button
+      styles={ styles.container}
+      disabled={!request}
+      title="Login"
+      onPress={() => {
+        promptAsync();
+        }}
+    />
+  );
 }
-
-
 
 const styles = StyleSheet.create({
   container: {
