@@ -13,11 +13,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import Tabs from './navigation/navigation';
 import Splash from './screens/splash';
 import Login from './screens/login';
-import firebase from 'firebase';
-import 'firebase/auth';
-import {firebaseConfig} from './config/keys';
-!firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
-
+import auth from '@react-native-firebase/auth';
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -38,7 +34,7 @@ export default class App extends React.Component {
     });
 
     if (this.state.isLoggedIn == null) {
-      firebase.auth().onAuthStateChanged(user => {
+      auth().onAuthStateChanged(user => {
         if (user) {
           this.setState({isLoggedIn: true});
         }
