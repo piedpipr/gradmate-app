@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {
   StyleSheet,
-  Button,
+  StatusBar,
   View,
   Text,
   Image,
@@ -100,6 +100,7 @@ const FlashCard = () => {
             justifyContent: 'space-around',
             paddingBottom: 100,
           }}>
+          <StatusBar translucent backgroundColor="transparent" />
           <View style={styles.containerSm}>
             <Animated.View
               style={[
