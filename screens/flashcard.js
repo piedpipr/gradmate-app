@@ -11,7 +11,7 @@ import {
 import AppIntroSlider from 'react-native-app-intro-slider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const FlashCard = () => {
+const FlashCard = props => {
   const [showRealApp, setShowRealApp] = useState(false);
   const onDone = () => {
     AsyncStorage.setItem('isAppLoaded', 'yes');
@@ -150,7 +150,7 @@ const FlashCard = () => {
 
   return (
     <AppIntroSlider
-      data={slides}
+      data={props.words}
       renderItem={RenderItem}
       onDone={onDone}
       showSkipButton={true}
@@ -230,83 +230,11 @@ const styles = StyleSheet.create({
 const slides = [
   {
     key: 'w1',
-    text: 'Curated Vocabs',
+    text: 'uCurated Vocabs',
     title: 'Best collections at the same place',
     meaning: 'Hello World',
     image: {
       uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_mobile_recharge.png',
-    },
-  },
-  {
-    key: 'w2',
-    title: 'Visualization',
-    text: 'Added image to the vocabularies',
-    image: {
-      uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_flight_ticket_booking.png',
-    },
-  },
-  {
-    key: 'w3',
-    title: 'Mnemonics',
-    text: 'Remember easily',
-    image: {
-      uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_discount.png',
-    },
-  },
-  {
-    key: 'w4',
-    title: 'Your companion',
-    text: ' GRE, IELTS, GMAT',
-    image: {
-      uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_best_deals.png',
-    },
-  },
-  {
-    key: 'w5',
-    title: 'Dummy',
-    text: 'Hello',
-    image: {
-      uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_bus_ticket_booking.png',
-    },
-  },
-  {
-    key: 'w6',
-    title: 'Last Page',
-    text: ' Last',
-    image: {
-      uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_train_ticket_booking.png',
-    },
-  },
-  {
-    key: 'w7',
-    title: 'Last Page',
-    text: ' Last',
-    image: {
-      uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_train_ticket_booking.png',
-    },
-  },
-  {
-    key: 'w8',
-    title: 'Last Page',
-    text: ' Last',
-    image: {
-      uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_train_ticket_booking.png',
-    },
-  },
-  {
-    key: 'w9',
-    title: 'Last Page',
-    text: ' Last',
-    image: {
-      uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_train_ticket_booking.png',
-    },
-  },
-  {
-    key: 'w10',
-    title: 'Last Page',
-    text: ' Last',
-    image: {
-      uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_train_ticket_booking.png',
     },
   },
 ];
