@@ -63,7 +63,7 @@ export default class Test2 extends React.Component {
       );
     }
     if (this.state.isExam == 'IELTS') {
-      return <IELTS />;
+      return <Gre />;
     } else {
       return <Gre />;
     }
