@@ -4,9 +4,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import LoginScreen from '../screens/login';
 import DashboardScreen from '../screens/dashboard';
-import FlashcardScreen from '../screens/flashcard';
 import Test1Screen from '../screens/test1';
-import FlashcardsScreen from '../screens/flashcards';
+import FlashcardNavScreen from '../screens/flashcards/cardnav';
 
 const Tab = createBottomTabNavigator();
 
@@ -75,8 +74,8 @@ const Tabs = () => {
         }}
       />
       <Tab.Screen
-        name="Flashscards"
-        component={FlashcardsScreen}
+        name="FlashscardNav"
+        component={FlashcardNavScreen}
         options={{
           tabBarIcon: ({focused}) => (
             <View style={{alignItems: 'center', justifyContent: 'center'}}>
@@ -94,7 +93,7 @@ const Tabs = () => {
                   fontSize: 13,
                   color: focused ? '#3395ff' : '#66b0ff',
                 }}>
-                Flashcards
+                FlashcardNav
               </Text>
             </View>
           ),
