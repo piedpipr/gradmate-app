@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -7,7 +8,7 @@
  */
 
 import React from 'react';
-import {Text, View} from 'react-native';
+import {StatusBar} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NavigationContainer} from '@react-navigation/native';
 import Tabs from './navigation/navigation';
@@ -44,6 +45,7 @@ export default class App extends React.Component {
     if (this.state.isAppLoaded && this.state.isLoggedIn) {
       return (
         <NavigationContainer>
+          <StatusBar translucent backgroundColor="transparent" />
           <Tabs />
         </NavigationContainer>
       );

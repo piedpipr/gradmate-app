@@ -33,6 +33,7 @@ export default function Dashboard() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar translucent backgroundColor="transparent" />
       <View style={styles.title}>
         <Text
           style={{fontFamily: 'Rancho-Regular', fontSize: 80, color: 'red'}}>
