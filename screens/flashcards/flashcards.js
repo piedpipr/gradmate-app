@@ -1,28 +1,18 @@
 import React from 'react';
 import {
-  TouchableOpacity,
+  TouchableHighlight,
   SafeAreaView,
   StyleSheet,
   StatusBar,
   Platform,
   View,
   Text,
-  Button,
 } from 'react-native';
 import {Card} from 'react-native-shadow-cards';
-import Gre from './grecards';
-import Ielts from './ieltscards';
 
 const Separator = () => <View style={styles.separator} />;
 
 export default class FlashCards extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isExam: null,
-    };
-  }
-
   render() {
     return (
       <SafeAreaView style={styles.container}>
@@ -33,7 +23,9 @@ export default class FlashCards extends React.Component {
         <Text style={styles.title}>SELECT EXAM TYPE</Text>
         <Separator />
         <View style={styles.cards}>
-          <TouchableOpacity
+          <TouchableHighlight
+            activeOpacity={0.6}
+            underlayColor="white"
             onPress={() => this.props.navigation.navigate('IELTSFlashcards')}>
             <Card
               style={{
@@ -46,8 +38,10 @@ export default class FlashCards extends React.Component {
                 <Text style={styles.ielts}>IELTS</Text>
               </View>
             </Card>
-          </TouchableOpacity>
-          <TouchableOpacity
+          </TouchableHighlight>
+          <TouchableHighlight
+            activeOpacity={0.6}
+            underlayColor="white"
             onPress={() => this.props.navigation.navigate('GREFlashcards')}>
             <Card
               style={{
@@ -60,7 +54,7 @@ export default class FlashCards extends React.Component {
                 <Text style={styles.gre}>GRE</Text>
               </View>
             </Card>
-          </TouchableOpacity>
+          </TouchableHighlight>
         </View>
       </SafeAreaView>
     );
