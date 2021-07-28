@@ -1,44 +1,94 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
+  ActivityIndicator,
   StyleSheet,
   SafeAreaView,
   StatusBar,
-  Platform,
+  FlatList,
   Text,
-  Button,
-  Alert,
   View,
-  Image,
+  TouchableHighlight,
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
-import FlashCard from './flashcard';
 
-export default function Gre() {
+export default function Gre({navigation}) {
   const [isData, setData] = useState(null);
+
   let FetchData = async () => {
     const events = await firestore().collection('test');
     events.get().then(querySnapshot => {
-      const tempDoc = querySnapshot.docs.map(doc => {
+      const greDoc = querySnapshot.docs.map(doc => {
         return {id: doc.id, ...doc.data()};
       });
-      console.log(tempDoc);
-      setData(tempDoc);
+      console.log(greDoc);
+      setData(greDoc);
     });
   };
 
+  useEffect(() => {
+    FetchData();
+  }, []);
+
+  let collectionData = () => {
+    let collection = null;
+    if (isData) {
+      collection = isData.map(doc => {
+        return {title: doc.collection};
+      });
+      collection = Array.from(new Set(collection.map(d => d.title))).map(
+        title => {
+          return {
+            title: title,
+          };
+        },
+      );
+      console.log(collection);
+    }
+    return collection;
+  };
+  let CollData = collectionData();
+
+  const Item = ({title}) => (
+    <TouchableHighlight
+      style={{borderRadius: 10}}
+      onPress={() => navigation.navigate('ListSets', {data: title})}>
+      <View style={styles.item}>
+        <Text style={styles.title}>{title}</Text>
+      </View>
+    </TouchableHighlight>
+  );
+
+  const renderItem = ({item}) => <Item title={item.title} />;
   if (isData) {
-    return <FlashCard words={isData} />;
-  } else {
     return (
-      <SafeAreaView>
-        <Text>Hello</Text>
-        <Button
-          marginRight="190px"
-          color="#219ebc"
-          title="Read"
-          onPress={() => FetchData()}
+      <SafeAreaView style={styles.container}>
+        <FlatList
+          data={CollData}
+          renderItem={renderItem}
+          keyExtractor={item => item.title}
         />
       </SafeAreaView>
     );
+  } else {
+    return <ActivityIndicator />;
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: StatusBar.currentHeight || 0,
+  },
+  item: {
+    backgroundColor: '#219ebc',
+    borderRadius: 10,
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+  },
+  title: {
+    fontSize: 32,
+    textAlign: 'center',
+    color: 'white',
+  },
+});

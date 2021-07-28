@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   StatusBar,
@@ -7,12 +7,33 @@ import {
   Image,
   TouchableWithoutFeedback,
   Animated,
+  ScrollView,
 } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import firestore from '@react-native-firebase/firestore';
 
 const FlashCard = props => {
   const [showRealApp, setShowRealApp] = useState(false);
+  const [isData, setData] = useState(null);
+
+  let FetchData = async () => {
+    const events = await firestore()
+      .collection('test')
+      .where('set', '==', props.route.params.data);
+    events.get().then(querySnapshot => {
+      const tempDoc = querySnapshot.docs.map(doc => {
+        return {id: doc.id, ...doc.data()};
+      });
+      console.log(tempDoc);
+      setData(tempDoc);
+    });
+  };
+
+  useEffect(() => {
+    FetchData();
+  }, []);
+
   const onDone = () => {
     AsyncStorage.setItem('isAppLoaded', 'yes');
     setShowRealApp(true);
@@ -119,7 +140,7 @@ const FlashCard = props => {
                 }}>
                 Given Word {item.title} - <Text style={{fontSize: 8}}>KPI</Text>
               </Text>
-              <Image style={styles.introImageStyle} source={item.image} />
+
               <Text style={styles.introTextStyle}>{item.text}</Text>
             </Animated.View>
 
@@ -130,17 +151,82 @@ const FlashCard = props => {
                 {elevation: elevationBack},
                 {opacity: backOpacity},
               ]}>
-              <Text
-                style={{
-                  fontSize: 20,
-                  paddingTop: 8,
-                  paddingLeft: 8,
-                  color: 'black',
-                  lineHeight: 20,
-                }}>
-                Word Meaning {item.meaning}
-                {val} - <Text style={{fontSize: 8}}>KPI</Text>
-              </Text>
+              <Image style={styles.introImageStyle} source={item.image} />
+              <ScrollView>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    paddingTop: 8,
+                    paddingLeft: 8,
+                  }}>
+                  Word Meaning {item.meaning} {'\n'}
+                  {'\n'} Lorem ipsum dolor sit amet, {'\n'}consectetur
+                  adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                  dolore magna aliqua. {'\n'}
+                  {'\n'}Ut enim ad minim veniam, {'\n'}
+                  {'\n'}quis nostrud exercitation ullamco laboris nisi ut
+                  aliquip ex ea commodo consequat. {'\n'}
+                  {'\n'}Duis aute irure dolor in reprehenderit in voluptate
+                  velit esse cillum dolore eu fugiat nulla pariatur. {'\n'}
+                  {'\n'}Excepteur sint occaecat cupidatat non proident, {'\n'}
+                  {'\n'}sunt in culpa qui officia deserunt mollit anim id est
+                  laborum.{'\n'}Duis aute irure dolor in reprehenderit in
+                  voluptate velit esse cillum dolore eu fugiat nulla pariatur.{' '}
+                  {'\n'}
+                  {'\n'}Excepteur sint occaecat cupidatat non proident, {'\n'}
+                  {'\n'}sunt in culpa qui officia deserunt mollit anim id est
+                  laborum.{'\n'}Ut enim ad minim veniam, {'\n'}
+                  {'\n'}quis nostrud exercitation ullamco laboris nisi ut
+                  aliquip ex ea commodo consequat. {'\n'}
+                  {'\n'}Duis aute irure dolor in reprehenderit in voluptate
+                  velit esse cillum dolore eu fugiat nulla pariatur. {'\n'}
+                  {'\n'}Excepteur sint occaecat cupidatat non proident, {'\n'}
+                  {'\n'}sunt in culpa qui officia deserunt mollit anim id est
+                  laborum.{'\n'}Duis aute irure dolor in reprehenderit in
+                  voluptate velit esse cillum dolore eu fugiat nulla pariatur.{' '}
+                  {'\n'}
+                  {'\n'}Excepteur sint occaecat cupidatat non proident, {'\n'}
+                  {'\n'}sunt in culpa qui officia deserunt mollit anim id est
+                  laborum.{'\n'}Ut enim ad minim veniam, {'\n'}
+                  {'\n'}quis nostrud exercitation ullamco laboris nisi ut
+                  aliquip ex ea commodo consequat. {'\n'}
+                  {'\n'}Duis aute irure dolor in reprehenderit in voluptate
+                  velit esse cillum dolore eu fugiat nulla pariatur. {'\n'}
+                  {'\n'}Excepteur sint occaecat cupidatat non proident, {'\n'}
+                  {'\n'}sunt in culpa qui officia deserunt mollit anim id est
+                  laborum.{'\n'}Duis aute irure dolor in reprehenderit in
+                  voluptate velit esse cillum dolore eu fugiat nulla pariatur.{' '}
+                  {'\n'}
+                  {'\n'}Excepteur sint occaecat cupidatat non proident, {'\n'}
+                  {'\n'}sunt in culpa qui officia deserunt mollit anim id est
+                  laborum.{'\n'}Ut enim ad minim veniam, {'\n'}
+                  {'\n'}quis nostrud exercitation ullamco laboris nisi ut
+                  aliquip ex ea commodo consequat. {'\n'}
+                  {'\n'}Duis aute irure dolor in reprehenderit in voluptate
+                  velit esse cillum dolore eu fugiat nulla pariatur. {'\n'}
+                  {'\n'}Excepteur sint occaecat cupidatat non proident, {'\n'}
+                  {'\n'}sunt in culpa qui officia deserunt mollit anim id est
+                  laborum.{'\n'}Duis aute irure dolor in reprehenderit in
+                  voluptate velit esse cillum dolore eu fugiat nulla pariatur.{' '}
+                  {'\n'}
+                  {'\n'}Excepteur sint occaecat cupidatat non proident, {'\n'}
+                  {'\n'}sunt in culpa qui officia deserunt mollit anim id est
+                  laborum.{'\n'}Ut enim ad minim veniam, {'\n'}
+                  {'\n'}quis nostrud exercitation ullamco laboris nisi ut
+                  aliquip ex ea commodo consequat. {'\n'}
+                  {'\n'}Duis aute irure dolor in reprehenderit in voluptate
+                  velit esse cillum dolore eu fugiat nulla pariatur. {'\n'}
+                  {'\n'}Excepteur sint occaecat cupidatat non proident, {'\n'}
+                  {'\n'}sunt in culpa qui officia deserunt mollit anim id est
+                  laborum.{'\n'}Duis aute irure dolor in reprehenderit in
+                  voluptate velit esse cillum dolore eu fugiat nulla pariatur.{' '}
+                  {'\n'}
+                  {'\n'}Excepteur sint occaecat cupidatat non proident, {'\n'}
+                  {'\n'}sunt in culpa qui officia deserunt mollit anim id est
+                  laborum.
+                  {val}
+                </Text>
+              </ScrollView>
             </Animated.View>
           </View>
         </View>
@@ -150,7 +236,8 @@ const FlashCard = props => {
 
   return (
     <AppIntroSlider
-      data={props.words}
+      // data={props.words}
+      data={slides}
       renderItem={RenderItem}
       onDone={onDone}
       showSkipButton={true}
@@ -181,8 +268,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   introImageStyle: {
-    width: 200,
-    height: 200,
+    width: '100%',
+    height: '40%',
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
   },
   introTextStyle: {
     fontSize: 18,
@@ -209,8 +298,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     marginHorizontal: 15,
     backgroundColor: 'white',
-    height: '65%',
-    minWidth: '90%',
+    height: '80%',
+    minWidth: '94%',
     borderRadius: 5,
     marginBottom: 15,
     zIndex: 2,
@@ -220,8 +309,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     marginHorizontal: 15,
     backgroundColor: 'white',
-    height: '65%',
-    minWidth: '90%',
+    height: '80%',
+    minWidth: '94%',
     borderRadius: 5,
     marginBottom: 15,
   },
@@ -231,10 +320,30 @@ const slides = [
   {
     key: 'w1',
     text: 'uCurated Vocabs',
+    title: 'Best collections \n\n\nat the same place',
+    meaning: 'Hello World1',
+    image: {
+      uri: 'https://avatars.githubusercontent.com/u/43669876?v=4',
+    },
+  },
+  {
+    key: 'w2',
+    text: 'uCurated Vocabs',
     title: 'Best collections at the same place',
     meaning: 'Hello World',
     image: {
       uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_mobile_recharge.png',
     },
+  },
+  {
+    exam: 'GRE',
+    collection: 'GregMat700',
+    set: 'Group1',
+    sub: '1',
+    key: '1',
+    word: 'abound',
+    meaning: 'plenty',
+    example: 'abound of money',
+    image: 'src',
   },
 ];

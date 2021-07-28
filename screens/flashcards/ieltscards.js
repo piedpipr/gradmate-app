@@ -13,7 +13,7 @@ import {
 import firestore from '@react-native-firebase/firestore';
 import FlashCard from './flashcard';
 
-export default function Ielts({navigation}) {
+export default function Ielts(props) {
   const [isData, setData] = useState(null);
   let FetchData = async () => {
     const events = await firestore().collection('test');
@@ -36,8 +36,9 @@ export default function Ielts({navigation}) {
           marginRight="190px"
           color="#219ebc"
           title="Move"
-          onPress={() => navigation.navigate('GREFlashcards')}
+          onPress={() => props.navigation.navigate('GREFlashcards')}
         />
+        <Text style={{color: 'black'}}>{props.route.params.data}</Text>
       </SafeAreaView>
     );
   }
