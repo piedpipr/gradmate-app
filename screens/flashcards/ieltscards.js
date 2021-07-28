@@ -1,45 +1,116 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
+  ActivityIndicator,
   StyleSheet,
   SafeAreaView,
   StatusBar,
-  Platform,
+  FlatList,
   Text,
-  Button,
-  Alert,
   View,
-  Image,
+  Platform,
+  TouchableHighlight,
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
-import FlashCard from './flashcard';
 
-export default function Ielts(props) {
+export default function Ielts({navigation}) {
   const [isData, setData] = useState(null);
+
   let FetchData = async () => {
     const events = await firestore().collection('test');
     events.get().then(querySnapshot => {
-      const tempDoc = querySnapshot.docs.map(doc => {
+      const ieltsDoc = querySnapshot.docs.map(doc => {
         return {id: doc.id, ...doc.data()};
       });
-      console.log(tempDoc);
-      setData(tempDoc);
+      console.log(ieltsDoc);
+      setData(ieltsDoc);
     });
   };
 
+  useEffect(() => {
+    FetchData();
+  }, []);
+
+  let collectionData = () => {
+    let collection = null;
+    if (isData) {
+      collection = isData.map(doc => {
+        return {title: doc.collection};
+      });
+      collection = Array.from(new Set(collection.map(d => d.title))).map(
+        title => {
+          return {
+            title: title,
+          };
+        },
+      );
+      console.log(collection);
+    }
+    return collection;
+  };
+  let CollData = collectionData();
+
+  const Item = ({title}) => (
+    <TouchableHighlight
+      style={{borderRadius: 10}}
+      underlayColor="#3395ff"
+      onPress={() => navigation.navigate('ListSets', {data: title})}>
+      <View style={styles.item}>
+        <Text style={styles.title}>{title}</Text>
+      </View>
+    </TouchableHighlight>
+  );
+
+  const renderItem = ({item}) => <Item title={item.title} />;
   if (isData) {
-    return <FlashCard words={isData} />;
-  } else {
     return (
-      <SafeAreaView>
-        <Text>Hello</Text>
-        <Button
-          marginRight="190px"
-          color="#219ebc"
-          title="Move"
-          onPress={() => props.navigation.navigate('GREFlashcards')}
+      <SafeAreaView style={styles.container}>
+        <Text
+          style={{
+            fontSize: 40,
+            fontWeight: 'bold',
+            color: 'white',
+            textAlign: 'center',
+            paddingTop: 30,
+          }}>
+          IELTS Collections
+        </Text>
+        <FlatList
+          data={CollData}
+          renderItem={renderItem}
+          keyExtractor={item => item.title}
+          contentContainerStyle={styles.listcontainer}
         />
-        <Text style={{color: 'black'}}>{props.route.params.data}</Text>
       </SafeAreaView>
     );
+  } else {
+    return <ActivityIndicator />;
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#3395ff',
+    alignContent: 'center',
+    justifyContent: 'center',
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+  },
+  listcontainer: {
+    flex: 1,
+    alignContent: 'center',
+    justifyContent: 'center',
+  },
+  item: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+  },
+  title: {
+    fontSize: 32,
+    textAlign: 'center',
+    color: '#3395ff',
+    fontWeight: 'bold',
+  },
+});

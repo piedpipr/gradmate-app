@@ -7,6 +7,7 @@ import {
   FlatList,
   Text,
   View,
+  Platform,
   TouchableHighlight,
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
@@ -51,6 +52,7 @@ export default function Gre({navigation}) {
   const Item = ({title}) => (
     <TouchableHighlight
       style={{borderRadius: 10}}
+      underlayColor="#3395ff"
       onPress={() => navigation.navigate('ListSets', {data: title})}>
       <View style={styles.item}>
         <Text style={styles.title}>{title}</Text>
@@ -62,10 +64,21 @@ export default function Gre({navigation}) {
   if (isData) {
     return (
       <SafeAreaView style={styles.container}>
+        <Text
+          style={{
+            fontSize: 40,
+            fontWeight: 'bold',
+            color: 'white',
+            textAlign: 'center',
+            paddingTop: 30,
+          }}>
+          GRE Collections
+        </Text>
         <FlatList
           data={CollData}
           renderItem={renderItem}
           keyExtractor={item => item.title}
+          contentContainerStyle={styles.listcontainer}
         />
       </SafeAreaView>
     );
@@ -77,10 +90,18 @@ export default function Gre({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
+    backgroundColor: '#3395ff',
+    alignContent: 'center',
+    justifyContent: 'center',
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+  },
+  listcontainer: {
+    flex: 1,
+    alignContent: 'center',
+    justifyContent: 'center',
   },
   item: {
-    backgroundColor: '#219ebc',
+    backgroundColor: 'white',
     borderRadius: 10,
     padding: 20,
     marginVertical: 8,
@@ -89,6 +110,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     textAlign: 'center',
-    color: 'white',
+    color: '#3395ff',
+    fontWeight: 'bold',
   },
 });

@@ -4,6 +4,7 @@ import GreScreen from './grecards';
 import IeltsScreen from './ieltscards';
 import FlashCardMenuScreen from './flashcards';
 import ListScreen from './listpage';
+import DetailsScreen from './details';
 import FlashCardScreen from './flashcard';
 
 const Stack = createStackNavigator();
@@ -18,6 +19,7 @@ function CardNav() {
       <Stack.Screen name="GREFlashcards" component={GreScreen} />
       <Stack.Screen name="IELTSFlashcards" component={IeltsScreen} />
       <Stack.Screen name="ListSets" component={ListScreen} />
+      <Stack.Screen name="Details" component={DetailsScreen} />
       <Stack.Screen name="Flashcard" component={FlashCardScreen} />
     </Stack.Navigator>
   );
