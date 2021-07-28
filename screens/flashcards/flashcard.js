@@ -109,7 +109,7 @@ const FlashCard = props => {
   };
 
   const RenderItem = ({item}) => {
-    var myColors = ['#febe29', '#3395ff', '#22bcb5', '#f6437b'];
+    var myColors = ['#febe29', '#3395ff', '#22bcb5', '#f75689'];
     const bgColor = myColors[Math.floor(Math.random() * myColors.length)];
     return (
       <TouchableWithoutFeedback onPress={() => flipCard()}>

@@ -36,22 +36,23 @@ export default function Dashboard() {
       <StatusBar translucent backgroundColor="transparent" />
       <View style={styles.title}>
         <Text
-          style={{fontFamily: 'Rancho-Regular', fontSize: 80, color: 'red'}}>
+          style={{fontFamily: 'Rancho-Regular', fontSize: 80, color: 'white'}}>
           GradMate
         </Text>
-        <Image
-          source={require('../assets/home.gif')}
-          style={{width: 350, height: 350}}
-        />
-        <Text style={{fontWeight: 'bold', fontSize: 18, color: '#219ebc'}}>
-          Welcome to Gradmate
-        </Text>
       </View>
+      <Image
+        style={styles.image}
+        source={require('../assets/icons/login.png')}
+      />
+      <Text style={{fontWeight: 'bold', fontSize: 18, color: 'white'}}>
+        Welcome to Gradmate
+      </Text>
+
       <Separator />
       <View style={styles.buttons}>
         <Button
           marginRight="190px"
-          color="#219ebc"
+          color="#febe29"
           title="Login with Google"
           onPress={() =>
             onGoogleButtonPress().then(() =>
@@ -61,16 +62,17 @@ export default function Dashboard() {
         />
         <Separator />
         <Button
-          color="#fb8500"
-          title="Continue Without Login"
+          style={styles.buttonText}
+          color="#96BAFF"
+          title="Continue Anonymous Login"
           onPress={() => Alert.alert('Simple Button pressed')}
         />
       </View>
       <Separator />
       <View style={{marginHorizontal: 25, marginBottom: -100}}>
-        <Text style={{textAlign: 'center', fontSize: 13, color: '#219ebc'}}>
-          Please login with Gmail to save your progress.{'\n'}Otherwise select
-          continue without log in to use the app
+        <Text style={{textAlign: 'center', fontSize: 13, color: 'white'}}>
+          Please login with Google to save your progress.{'\n'}Otherwise select
+          continue anonymous log in to use the app
         </Text>
       </View>
       <StatusBar style="auto" />
@@ -81,16 +83,27 @@ export default function Dashboard() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#3395ff',
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+    paddingBottom: '15%',
   },
   title: {
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
+  image: {
+    width: '90%',
+    height: '40%',
+    marginTop: '10%',
+    marginBottom: '10%',
+  },
   buttons: {
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+  },
+  buttonText: {
     flexDirection: 'column',
     justifyContent: 'flex-start',
   },

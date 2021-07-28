@@ -75,8 +75,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   introImageStyle: {
-    width: 200,
-    height: 200,
+    width: '80%',
+    height: '40%',
   },
   introTextStyle: {
     fontSize: 18,
@@ -96,56 +96,23 @@ const styles = StyleSheet.create({
 const slides = [
   {
     key: 's1',
-    text: 'Curated Vocabs',
-    title: 'Best collections at the same place',
-    image: {
-      uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_mobile_recharge.png',
-    },
-    backgroundColor: '#20d2bb',
+    text: 'Curated vocabulary flashcards with \nimages and mnemonics',
+    title: 'Complete Vocabulary Solution',
+    image: require('../assets/icons/screen1.png'),
+    backgroundColor: '#3395ff',
   },
   {
     key: 's2',
-    title: 'Visualization',
-    text: 'Added image to the vocabularies',
-    image: {
-      uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_flight_ticket_booking.png',
-    },
+    title: 'Daily Driver For Exam Prep ',
+    text: 'Best collection of vocabulary for both \nGRE & IELTS exam',
+    image: require('../assets/icons/screen2.png'),
     backgroundColor: '#febe29',
   },
   {
     key: 's3',
-    title: 'Mnemonics',
-    text: 'Remember easily',
-    image: {
-      uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_discount.png',
-    },
-    backgroundColor: '#22bcb5',
-  },
-  {
-    key: 's4',
-    title: 'Your companion',
-    text: ' GRE, IELTS, GMAT',
-    image: {
-      uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_best_deals.png',
-    },
-    backgroundColor: '#3395ff',
-  },
-  {
-    key: 's5',
-    title: 'Dummy',
-    text: 'Hello',
-    image: {
-      uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_bus_ticket_booking.png',
-    },
-    backgroundColor: '#f6437b',
-  },
-  {
-    key: 's6',
-    title: 'Last Page',
-    text: ' Last',
-    image: {
-      uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_train_ticket_booking.png',
-    },
-    backgroundColor: '#febe29',
+    title: 'Dashboard',
+    text: 'Track your progress\nMany new features are coming soon',
+    image: require('../assets/icons/screen3.png'),
+    backgroundColor: '#f75689',
   },
 ];
