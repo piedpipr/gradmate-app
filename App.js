@@ -37,7 +37,18 @@ export default class App extends React.Component {
     if (this.state.isLoggedIn == null) {
       auth().onAuthStateChanged(user => {
         if (user) {
+          AsyncStorage.setItem('currentUser', JSON.stringify(user), err => {
+            if (err) {
+              console.log('an error with user asynchstorage');
+              throw err;
+            }
+            console.log('successfylly saved currentUser to local');
+          }).catch(err => {
+            console.log('error with user data saving is: ' + err);
+          }); //SAVE THE USER TO ASYNCSTORAGE
+
           this.setState({isLoggedIn: true});
+          console.log(user);
         }
       });
     }
