@@ -4,6 +4,7 @@ import {
   SafeAreaView,
   StatusBar,
   Platform,
+  Dimensions,
   Text,
   Button,
   Alert,
@@ -11,10 +12,12 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
+import {PieChart} from 'react-native-chart-kit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Card} from 'react-native-shadow-cards';
 
 const Separator = () => <View style={styles.separator} />;
+const screenWidth = Dimensions.get('window').width / 1.1;
 
 export default function Dashboard() {
   const [isUser, setUser] = useState(null);
@@ -142,22 +145,30 @@ export default function Dashboard() {
               cornerRadius={10}
               style={{
                 marginTop: 10,
+                paddingBottom: 80,
                 elevation: 0,
                 backgroundColor: 'rgba(52, 52, 52, 0.1)',
               }}>
               <Text
                 style={{
-                  textAlign: 'center',
-                  fontSize: 16,
                   color: 'white',
-                  paddingTop: 60,
-                  paddingBottom: 40,
-                  paddingHorizontal: 25,
+                  fontWeight: 'bold',
+                  fontSize: 25,
+                  textAlign: 'center',
                 }}>
-                COMPLETED {'\n'}
-                {'\n'}
-                {'\n'}UNCOMPLETED
+                STATS
               </Text>
+              <PieChart
+                data={data}
+                width={screenWidth}
+                height={220}
+                chartConfig={chartConfig}
+                accessor={'population'}
+                backgroundColor={'transparent'}
+                paddingLeft={'0'}
+                center={[10, -10]}
+                absolute
+              />
             </Card>
           </View>
         </SafeAreaView>
@@ -184,7 +195,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    maxHeight: '40%',
+    maxHeight: '33%',
   },
   title: {
     alignItems: 'center',
@@ -198,3 +209,38 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
 });
+
+const chartConfig = {
+  backgroundGradientFrom: '#1E2923',
+  backgroundGradientFromOpacity: 0,
+  backgroundGradientTo: '#08130D',
+  backgroundGradientToOpacity: 0.5,
+  color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+  strokeWidth: 2, // optional, default 3
+  barPercentage: 0.5,
+  useShadowColorFromDataset: false, // optional
+};
+
+const data = [
+  {
+    name: 'Completed',
+    population: 280,
+    color: '#febe29',
+    legendFontColor: 'white',
+    legendFontSize: 15,
+  },
+  {
+    name: 'Uncompleted',
+    population: 900,
+    color: '#f75689',
+    legendFontColor: 'white',
+    legendFontSize: 15,
+  },
+  {
+    name: 'Unopened',
+    population: 1500,
+    color: 'white',
+    legendFontColor: 'white',
+    legendFontSize: 15,
+  },
+];
