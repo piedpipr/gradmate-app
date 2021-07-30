@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   SafeAreaView,
@@ -9,8 +9,10 @@ import {
   Alert,
   View,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Card} from 'react-native-shadow-cards';
 
 const Separator = () => <View style={styles.separator} />;
 
@@ -23,61 +25,166 @@ export default function Dashboard() {
       valuePromise.then(value => {
         let val = JSON.parse(value);
         setUser(val);
+        console.log(val);
       });
     }
   };
-  CurrentUser();
+
+  useEffect(() => {
+    CurrentUser();
+  }, []);
+
   console.log(isUser);
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.title}>
-        <Text
-          style={{fontFamily: 'Rancho-Regular', fontSize: 80, color: 'red'}}>
-          Dashboard
-        </Text>
-        <Image
-          source={require('../assets/home.gif')}
-          style={{width: 350, height: 350}}
-        />
-        <Text style={{fontWeight: 'bold', fontSize: 18, color: '#219ebc'}}>
-          Welcome to Gradmate
-        </Text>
-      </View>
-      <Separator />
-      <View style={styles.buttons}>
-        <Button
-          marginRight="190px"
-          color="#219ebc"
-          title="Login with Google"
-          onPress={() => Alert.alert('Simple Button pressed')}
-        />
-        <Separator />
-        <Button
-          color="#fb8500"
-          title="Continue Without Login"
-          onPress={() => Alert.alert('Simple Button pressed')}
-        />
-      </View>
-      <Separator />
-      <View style={{marginHorizontal: 25, marginBottom: -100}}>
-        <Text style={{textAlign: 'center', fontSize: 13, color: '#219ebc'}}>
-          Please login with Gmail to save your progress.{'\n'}Otherwise select
-          continue without log in to use the app
-        </Text>
-      </View>
-      <StatusBar style="auto" />
-    </SafeAreaView>
-  );
+  if (isUser) {
+    if (isUser.isAnonymous) {
+      return (
+        <SafeAreaView style={styles.container}>
+          <View style={styles.title}>
+            <Text
+              style={{
+                fontFamily: 'Rancho-Regular',
+                fontSize: 80,
+                color: 'white',
+                paddingBottom: 30,
+                paddingTop: 40,
+              }}>
+              Dashboard
+            </Text>
+            <Card
+              cornerRadius={15}
+              style={{
+                elevation: 1,
+                backgroundColor: 'rgba(52, 52, 52, 0.2)',
+                ...styles.containercard,
+              }}>
+              <Image
+                source={require('../assets/icons/user.png')}
+                style={{width: 140, height: 140, borderRadius: 70}}
+              />
+              <Text
+                style={{
+                  fontSize: 30,
+                  color: '#3395ff',
+                  paddingTop: 10,
+                  paddingBottom: 0,
+                  fontWeight: 'bold',
+                }}>
+                Anonymous
+              </Text>
+            </Card>
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 16,
+                color: 'white',
+                paddingTop: 60,
+                paddingHorizontal: 25,
+              }}>
+              Please login with Google to access your dashboard. In the current
+              build we are unable to provide dashboard functionality to the
+              anonymous user. {'\n'}
+              {'\n'}To login with Google clear the app data from Android setting
+              and re-run the app. Current data will be erased.
+            </Text>
+          </View>
+        </SafeAreaView>
+      );
+    } else {
+      const userphoto = isUser.photoURL;
+      return (
+        <SafeAreaView style={styles.container}>
+          <View style={styles.title}>
+            <Text
+              style={{
+                fontFamily: 'Rancho-Regular',
+                fontSize: 80,
+                color: 'white',
+                paddingBottom: 30,
+                paddingTop: 10,
+              }}>
+              Dashboard
+            </Text>
+            <Card
+              cornerRadius={12}
+              style={{
+                elevation: 0,
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                ...styles.containercard,
+              }}>
+              <View>
+                {userphoto == null ? (
+                  <Image
+                    source={require('../assets/icons/user.png')}
+                    style={{width: 140, height: 140, borderRadius: 70}}
+                  />
+                ) : (
+                  <Image
+                    source={{
+                      uri: userphoto,
+                    }}
+                    style={{width: 140, height: 140, borderRadius: 70}}
+                  />
+                )}
+              </View>
+              <Text
+                style={{
+                  fontSize: 30,
+                  color: '#3395ff',
+                  paddingTop: 10,
+                  paddingBottom: 0,
+                  fontWeight: 'bold',
+                }}>
+                {isUser.displayName}
+              </Text>
+            </Card>
+            <Card
+              cornerRadius={10}
+              style={{
+                marginTop: 10,
+                elevation: 0,
+                backgroundColor: 'rgba(52, 52, 52, 0.1)',
+              }}>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 16,
+                  color: 'white',
+                  paddingTop: 60,
+                  paddingBottom: 40,
+                  paddingHorizontal: 25,
+                }}>
+                COMPLETED {'\n'}
+                {'\n'}
+                {'\n'}UNCOMPLETED
+              </Text>
+            </Card>
+          </View>
+        </SafeAreaView>
+      );
+    }
+  } else {
+    return (
+      <SafeAreaView style={styles.container}>
+        <ActivityIndicator />
+      </SafeAreaView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#3395ff',
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+  },
+  containercard: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    maxHeight: '40%',
   },
   title: {
     alignItems: 'center',
