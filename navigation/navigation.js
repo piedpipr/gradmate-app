@@ -1,11 +1,10 @@
 import React from 'react';
-import {Text, View, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {Text, View, Image} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-
-import LoginScreen from '../screens/login';
 import DashboardScreen from '../screens/dashboard';
 import Test1Screen from '../screens/test1';
 import FlashcardNavScreen from '../screens/flashcards/cardnav';
+import AboutScreen from '../screens/about';
 
 const Tab = createBottomTabNavigator();
 
@@ -93,15 +92,15 @@ const Tabs = () => {
                   fontSize: 13,
                   color: focused ? '#3395ff' : '#66b0ff',
                 }}>
-                FlashcardNav
+                Flashcards
               </Text>
             </View>
           ),
         }}
       />
       <Tab.Screen
-        name="Quiz"
-        component={LoginScreen}
+        name="About"
+        component={AboutScreen}
         options={{
           tabBarIcon: ({focused}) => (
             <View style={{alignItems: 'center', justifyContent: 'center'}}>
@@ -119,7 +118,7 @@ const Tabs = () => {
                   fontSize: 13,
                   color: focused ? '#3395ff' : '#66b0ff',
                 }}>
-                Quiz
+                About Us
               </Text>
             </View>
           ),
@@ -128,18 +127,5 @@ const Tabs = () => {
     </Tab.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  shadow: {
-    shadowColor: 'red',
-    shadowOffset: {
-      height: 20,
-      width: 10,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 22,
-    elevation: 5,
-  },
-});
 
 export default Tabs;

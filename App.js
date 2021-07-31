@@ -15,12 +15,14 @@ import Tabs from './navigation/navigation';
 import Splash from './screens/splash';
 import Login from './screens/login';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isAppLoaded: null,
       isLoggedIn: null,
+      isUserData: null,
     };
   }
 
@@ -37,7 +39,56 @@ export default class App extends React.Component {
     if (this.state.isLoggedIn == null) {
       auth().onAuthStateChanged(user => {
         if (user) {
-          this.setState({isLoggedIn: true});
+          ///////////////////////////////////
+          AsyncStorage.setItem('currentUser', JSON.stringify(user), err => {
+            if (err) {
+              console.log('an error with user asynchstorage');
+              throw err;
+            }
+            console.log('successfylly saved currentUser to local');
+          }).catch(err => {
+            console.log('error with user data saving is: ' + err);
+          }); //SAVE THE USER TO ASYNCSTORAGE
+
+          ///////////////////////////////
+          let userData = async () => {
+            const events = await firestore()
+              .collection('testusers')
+              .doc(user.uid);
+            events
+              .get()
+              .then(data => {
+                if (data.exists) {
+                  console.log('User alredy exists');
+                  console.log(data);
+                  this.setState({isLoggedIn: true});
+                } else {
+                  function AddUserDB() {
+                    firestore()
+                      .collection('testusers')
+                      .doc(user.uid)
+                      .set({
+                        name: user.displayName,
+                        email: user.email,
+                      })
+                      .then(() => {
+                        console.log('User added! to Firestore');
+                        this.setState({isLoggedIn: true});
+                      });
+                  }
+                  AddUserDB();
+                }
+              })
+              .catch(error => {
+                console.log(error);
+                console.log('Error Showed');
+              }); //CHECKS IF THE LOGGED IN USER ALREADY EXISTIS IN USER COLLECTION, IF EXISTS RENDER APP OTHERWISE ADD USER DATA TO DB
+          };
+          userData();
+          /////////////////////////
+
+          // this.setState({isLoggedIn: true});
+          console.log(user);
         }
       });
     }

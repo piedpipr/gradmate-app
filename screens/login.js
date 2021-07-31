@@ -30,6 +30,20 @@ export default function Dashboard() {
     // Sign-in the user with the credential
     return auth().signInWithCredential(googleCredential);
   }
+  const anonymousLogin = () => {
+    auth()
+      .signInAnonymously()
+      .then(() => {
+        console.log('User signed in anonymously');
+      })
+      .catch(error => {
+        if (error.code === 'auth/operation-not-allowed') {
+          console.log('Enable anonymous in your firebase console.');
+        }
+
+        console.error(error);
+      });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -65,14 +79,20 @@ export default function Dashboard() {
           style={styles.buttonText}
           color="#96BAFF"
           title="Continue Anonymous Login"
-          onPress={() => Alert.alert('Simple Button pressed')}
+          onPress={() => anonymousLogin()}
         />
       </View>
       <Separator />
-      <View style={{marginHorizontal: 25, marginBottom: -100}}>
-        <Text style={{textAlign: 'center', fontSize: 13, color: 'white'}}>
-          Please login with Google to save your progress.{'\n'}Otherwise select
-          continue anonymous log in to use the app
+      <View style={{marginHorizontal: 25}}>
+        <Text
+          style={{
+            textAlign: 'center',
+            fontSize: 13,
+            color: 'white',
+            paddingBottom: 20,
+          }}>
+          Please login with Google to save your progress and use dashboard.
+          {'\n'}Otherwise select continue anonymous log in to use the app
         </Text>
       </View>
       <StatusBar style="auto" />
@@ -92,6 +112,7 @@ const styles = StyleSheet.create({
   title: {
     alignItems: 'center',
     justifyContent: 'flex-start',
+    paddingTop: 70,
   },
   image: {
     width: '90%',

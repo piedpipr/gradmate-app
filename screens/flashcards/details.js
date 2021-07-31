@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 
-export default function List(props) {
+export default function Details(props) {
   const [isData, setData] = useState(null);
 
   let FetchData = async () => {
@@ -36,30 +36,30 @@ export default function List(props) {
   //   collection = [...new Set(collection)];
   //   console.log(collection);
   // }
-  let previous = props.route.params.data;
-
   console.log('props.route.params.data');
   console.log(props.route.params.data);
-  let setsData = () => {
-    let sets = null;
+  let subsetsData = () => {
+    let subsets = null;
     if (isData) {
-      let setObjects = isData.filter(
-        set => set.collection == props.route.params.data,
+      let subsetObjects = isData.filter(
+        set =>
+          set.collection == props.route.params.prev &&
+          set.set == props.route.params.data,
       );
-      console.log(setObjects);
-      sets = setObjects.map(doc => {
-        return {title: doc.set};
+      console.log(subsetObjects);
+      subsets = subsetObjects.map(doc => {
+        return {title: doc.sub};
       });
-      sets = Array.from(new Set(sets.map(d => d.title))).map(title => {
+      subsets = Array.from(new Set(subsets.map(d => d.title))).map(title => {
         return {
           title: title,
         };
       });
-      console.log(sets);
+      console.log(subsets);
     }
-    return sets;
+    return subsets;
   };
-  let SetsData = setsData();
+  let SubSetsData = subsetsData();
 
   //   let ShowSets = isData.filter(set => set.set === props.route.params.data);
 
@@ -88,13 +88,11 @@ export default function List(props) {
 
   const Item = ({title}) => (
     <TouchableHighlight
-      underlayColor="#febe29"
+      underlayColor="#f75689"
       style={{borderRadius: 10}}
-      onPress={() =>
-        props.navigation.navigate('Details', {data: title, prev: previous})
-      }>
+      onPress={() => props.navigation.navigate('Flashcard', {data: title})}>
       <View style={styles.item}>
-        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.title}>Words From {title}</Text>
       </View>
     </TouchableHighlight>
   );
@@ -115,7 +113,7 @@ export default function List(props) {
           {props.route.params.data}
         </Text>
         <FlatList
-          data={SetsData}
+          data={SubSetsData}
           renderItem={renderItem}
           keyExtractor={item => item.title}
         />
@@ -129,7 +127,7 @@ export default function List(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#febe29',
+    backgroundColor: '#f75689',
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   item: {

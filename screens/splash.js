@@ -88,7 +88,8 @@ const styles = StyleSheet.create({
     fontSize: 25,
     color: 'white',
     textAlign: 'center',
-    marginBottom: 16,
+    paddingBottom: 30,
+    paddingTop: 40,
     fontWeight: 'bold',
   },
 });
@@ -96,15 +97,15 @@ const styles = StyleSheet.create({
 const slides = [
   {
     key: 's1',
-    text: 'Curated vocabulary flashcards with \nimages and mnemonics',
     title: 'Complete Vocabulary Solution',
+    text: 'Curated vocabulary flashcards with \nimages and mnemonics',
     image: require('../assets/icons/screen1.png'),
     backgroundColor: '#3395ff',
   },
   {
     key: 's2',
-    title: 'Daily Driver For Exam Prep ',
-    text: 'Best collection of vocabulary for both \nGRE & IELTS exam',
+    title: 'Daily Driver For Test Prep ',
+    text: 'Best collection of vocabulary for \nboth GRE & IELTS exam',
     image: require('../assets/icons/screen2.png'),
     backgroundColor: '#febe29',
   },
