@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 GoogleSignin.configure({
   webClientId:
@@ -29,7 +31,7 @@ export default function Dashboard() {
 
     // Sign-in the user with the credential
     return auth().signInWithCredential(googleCredential);
-  }
+  } //GOOGLE SIGN IN USING WEB CLIENT
   const anonymousLogin = () => {
     auth()
       .signInAnonymously()
@@ -43,6 +45,43 @@ export default function Dashboard() {
 
         console.error(error);
       });
+  }; //FIREBASE ANONYMOUS LOGIN
+
+  let FetchGreDB = async () => {
+    const events = await firestore().collection('gre');
+    events.get().then(querySnapshot => {
+      const greDoc = querySnapshot.docs.map(doc => {
+        return {id: doc.id, ...doc.data()};
+      });
+      ///////////////////////////////////
+      AsyncStorage.setItem('GRE', JSON.stringify(greDoc), err => {
+        if (err) {
+          console.log('an error with GRE AsyncStorage');
+          throw err;
+        }
+        console.log('successfylly saved GRE DATA to local');
+      }).catch(err => {
+        console.log('error with GRE DATA saving is: ' + err);
+      }); //SAVE THE GRE OBJECTS TO ASYNCSTORAGE
+    });
+  };
+  let FetchIeltsDB = async () => {
+    const events = await firestore().collection('gre');
+    events.get().then(querySnapshot => {
+      const ieltsDoc = querySnapshot.docs.map(doc => {
+        return {id: doc.id, ...doc.data()};
+      });
+      ///////////////////////////////////
+      AsyncStorage.setItem('IELTS', JSON.stringify(ieltsDoc), err => {
+        if (err) {
+          console.log('an error with IELTS AsyncStorage');
+          throw err;
+        }
+        console.log('successfylly saved IELTS DATA to local');
+      }).catch(err => {
+        console.log('error with IELTS DATA saving is: ' + err);
+      }); //SAVE THE IELTS OBJECTS TO ASYNCSTORAGE
+    });
   };
 
   return (
@@ -68,18 +107,24 @@ export default function Dashboard() {
           marginRight="190px"
           color="#febe29"
           title="Login with Google"
-          onPress={() =>
+          onPress={() => {
+            FetchIeltsDB();
+            FetchGreDB();
             onGoogleButtonPress().then(() =>
               console.log('Signed in with Google!'),
-            )
-          }
+            );
+          }}
         />
         <Separator />
         <Button
           style={styles.buttonText}
           color="#96BAFF"
           title="Continue Anonymous Login"
-          onPress={() => anonymousLogin()}
+          onPress={() => {
+            FetchIeltsDB();
+            FetchGreDB();
+            anonymousLogin();
+          }}
         />
       </View>
       <Separator />
