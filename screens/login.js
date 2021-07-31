@@ -91,8 +91,8 @@ export default function Dashboard() {
             color: 'white',
             paddingBottom: 20,
           }}>
-          Please login with Google to save your progress.{'\n'}Otherwise select
-          continue anonymous log in to use the app
+          Please login with Google to save your progress and use dashboard.
+          {'\n'}Otherwise select continue anonymous log in to use the app
         </Text>
       </View>
       <StatusBar style="auto" />

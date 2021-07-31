@@ -27,8 +27,11 @@ export default class FlashCards extends React.Component {
         </Text>
         <Text style={styles.title}>SELECT EXAM TYPE</Text>
         <Image
-          source={require('../../assets/icons/cards.png')}
-          style={{width: 200, height: 200}}
+          source={require('../../assets/icons/screen2.png')}
+          style={{
+            width: 350,
+            height: 350,
+          }}
         />
         <Separator />
         <View style={styles.cards}>
@@ -41,7 +44,7 @@ export default class FlashCards extends React.Component {
                 backgroundColor: 'white',
                 padding: 10,
                 margin: 10,
-                elevation: 1,
+                elevation: 0,
                 opacity: 0.92,
               }}>
               <View>
@@ -58,7 +61,7 @@ export default class FlashCards extends React.Component {
                 backgroundColor: 'white',
                 padding: 10,
                 margin: 10,
-                elevation: 1,
+                elevation: 0,
                 opacity: 0.92,
               }}>
               <View>
@@ -85,7 +88,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
     color: 'white',
-    marginBottom: 50,
+    marginBottom: 10,
   },
   ielts: {
     textAlign: 'center',
@@ -102,7 +105,7 @@ const styles = StyleSheet.create({
     color: '#3395ff',
   },
   cards: {
-    marginTop: 70,
+    marginTop: 5,
   },
 
   separator: {

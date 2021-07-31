@@ -5,9 +5,8 @@ import {
   StatusBar,
   Platform,
   Dimensions,
+  ScrollView,
   Text,
-  Button,
-  Alert,
   View,
   Image,
   ActivityIndicator,
@@ -57,8 +56,8 @@ export default function Dashboard() {
             <Card
               cornerRadius={15}
               style={{
-                elevation: 1,
-                backgroundColor: 'rgba(52, 52, 52, 0.2)',
+                elevation: 0,
+                backgroundColor: 'white',
                 ...styles.containercard,
               }}>
               <Image
@@ -108,68 +107,66 @@ export default function Dashboard() {
               }}>
               Dashboard
             </Text>
-            <Card
-              cornerRadius={12}
-              style={{
-                elevation: 0,
-                backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                ...styles.containercard,
-              }}>
-              <View>
-                {userphoto == null ? (
-                  <Image
-                    source={require('../assets/icons/user.png')}
-                    style={{width: 140, height: 140, borderRadius: 70}}
-                  />
-                ) : (
-                  <Image
-                    source={{
-                      uri: userphoto,
-                    }}
-                    style={{width: 140, height: 140, borderRadius: 70}}
-                  />
-                )}
-              </View>
-              <Text
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <Card
+                cornerRadius={15}
                 style={{
-                  fontSize: 30,
-                  color: '#3395ff',
-                  paddingTop: 10,
-                  paddingBottom: 0,
-                  fontWeight: 'bold',
+                  elevation: 0,
+                  backgroundColor: 'rgba(52, 52, 52, 0.1)',
+                  paddingTop: 70,
+                  paddingBottom: 70,
+                  ...styles.containercard,
                 }}>
-                {isUser.displayName}
-              </Text>
-            </Card>
-            <Card
-              cornerRadius={10}
-              style={{
-                marginTop: 10,
-                paddingBottom: 80,
-                elevation: 0,
-                backgroundColor: 'rgba(52, 52, 52, 0.1)',
-              }}>
-              <Text
+                <View>
+                  {userphoto == null ? (
+                    <Image
+                      source={require('../assets/icons/user.png')}
+                      style={{width: 140, height: 140, borderRadius: 70}}
+                    />
+                  ) : (
+                    <Image
+                      source={{
+                        uri: userphoto,
+                      }}
+                      style={{width: 140, height: 140, borderRadius: 70}}
+                    />
+                  )}
+                </View>
+                <Text
+                  style={{
+                    fontSize: 30,
+                    color: 'white',
+                    paddingTop: 10,
+                    paddingBottom: 0,
+                    fontWeight: 'bold',
+                  }}>
+                  {isUser.displayName}
+                </Text>
+              </Card>
+              <Card
+                cornerRadius={20}
                 style={{
-                  color: 'white',
-                  fontWeight: 'bold',
-                  fontSize: 25,
-                  textAlign: 'center',
+                  marginTop: 10,
+                  paddingBottom: 80,
+                  elevation: 0,
+                  backgroundColor: 'rgba(52, 52, 52, 0.1)',
                 }}>
-                STATS
-              </Text>
-              <PieChart
-                data={data}
-                width={screenWidth}
-                height={220}
-                chartConfig={chartConfig}
-                accessor={'population'}
-                backgroundColor={'transparent'}
-                paddingLeft={'0'}
-                center={[10, -10]}
-                absolute
-              />
-            </Card>
+                <Text style={styles.heading}>STATS</Text>
+                <PieChart
+                  data={data}
+                  width={screenWidth}
+                  height={220}
+                  chartConfig={chartConfig}
+                  accessor={'population'}
+                  backgroundColor={'transparent'}
+                  paddingLeft={'0'}
+                  center={[10, -10]}
+                  absolute
+                />
+                <Text style={styles.heading}>COMPLETED</Text>
+                <Text style={styles.heading}>INCOMPLETE</Text>
+              </Card>
+            </ScrollView>
           </View>
         </SafeAreaView>
       );
@@ -195,11 +192,23 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    maxHeight: '33%',
+    maxHeight: '35%',
+  },
+  containercardSm: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
     alignItems: 'center',
     justifyContent: 'flex-start',
+  },
+  heading: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 25,
+    textAlign: 'center',
+    paddingTop: 10,
   },
   buttons: {
     flexDirection: 'column',
