@@ -5,10 +5,12 @@ import {
   SafeAreaView,
   StatusBar,
   FlatList,
+  Platform,
   Text,
   View,
   TouchableHighlight,
 } from 'react-native';
+import SwitchSelector from 'react-native-switch-selector';
 import firestore from '@react-native-firebase/firestore';
 
 export default function Details(props) {
@@ -89,7 +91,7 @@ export default function Details(props) {
   const Item = ({title}) => (
     <TouchableHighlight
       underlayColor="#f75689"
-      style={{borderRadius: 10}}
+      style={{borderRadius: 10, minWidth: '100%'}}
       onPress={() => props.navigation.navigate('Flashcard', {data: title})}>
       <View style={styles.item}>
         <Text style={styles.title}>Words From {title}</Text>
@@ -112,6 +114,18 @@ export default function Details(props) {
           }}>
           {props.route.params.data}
         </Text>
+        <Text style={styles.heading}>SELECT STATUS</Text>
+        <SwitchSelector
+          style={styles.switch}
+          textColor={'#3395ff'}
+          selectedColor={'white'}
+          buttonColor={'#f7cf79'}
+          bold={true}
+          options={options}
+          initial={1}
+          onPress={value => console.log(`Call onPress with value: ${value}`)}
+        />
+        <Text style={styles.heading}>CARD SETS</Text>
         <FlatList
           data={SubSetsData}
           renderItem={renderItem}
@@ -127,6 +141,8 @@ export default function Details(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: '#f75689',
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
@@ -142,6 +158,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#3395ff',
     fontWeight: 'bold',
+  },
+  heading: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 25,
+    textAlign: 'center',
+    paddingTop: 10,
+  },
+  switch: {
+    maxWidth: '93%',
+    marginBottom: 20,
+    marginTop: 5,
   },
 });
 
@@ -160,3 +188,8 @@ const styles = StyleSheet.create({
 //     </SafeAreaView>
 //   );
 // }
+const options = [
+  {label: 'Learning', value: '1'},
+  {label: 'Auditing', value: '1.5'},
+  {label: 'Learned', value: '2'},
+];
