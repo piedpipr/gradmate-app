@@ -64,22 +64,27 @@ export default class App extends React.Component {
                   console.log(data);
                   this.setState({isLoggedIn: true});
                 } else {
-                  function AddUserDB() {
-                    firestore()
-                      .collection('testusers') //CHANGE TO ORIGINSL USER COLLECTION
-                      .doc(user.uid)
-                      .set({
-                        name: user.displayName,
-                        email: user.email,
-                        learned: null,
-                        learning: null,
-                      })
-                      .then(() => {
-                        console.log('User added! to Firestore');
-                        this.setState({isLoggedIn: true});
-                      });
+                  if (user.isAnonymous === false) {
+                    function AddUserDB() {
+                      firestore()
+                        .collection('testusers') //CHANGE TO ORIGINSL USER COLLECTION
+                        .doc(user.uid)
+                        .set({
+                          name: user.displayName,
+                          email: user.email,
+                          learned: null,
+                          learning: null,
+                        })
+                        .then(() => {
+                          console.log('User added! to Firestore');
+                          this.setState({isLoggedIn: true});
+                        });
+                    }
+                    AddUserDB();
+                  } else {
+                    console.log('User is Anonymous');
+                    this.setState({isLoggedIn: true});
                   }
-                  AddUserDB();
                 }
               })
               .catch(error => {
