@@ -10,24 +10,27 @@ import {
   Platform,
   TouchableHighlight,
 } from 'react-native';
-import firestore from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Gre({navigation}) {
   const [isData, setData] = useState(null);
 
-  let FetchData = async () => {
-    const events = await firestore().collection('test');
-    events.get().then(querySnapshot => {
-      const greDoc = querySnapshot.docs.map(doc => {
-        return {id: doc.id, ...doc.data()};
+  ///////////////////////////////////////////////////////////////////////////////////
+
+  const LocalData = () => {
+    if (isData == null) {
+      const valuePromise = AsyncStorage.getItem('GRE');
+      valuePromise.then(value => {
+        let val = JSON.parse(value);
+        setData(val);
       });
-      console.log(greDoc);
-      setData(greDoc);
-    });
-  };
+    }
+  }; // LOAD WORD DATA FROM LOCAL ASYNCSTORAGE
+
+  /////////////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
-    FetchData();
+    LocalData();
   }, []);
 
   let collectionData = () => {
