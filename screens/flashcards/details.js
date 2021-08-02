@@ -13,12 +13,28 @@ import {
 import SwitchSelector from 'react-native-switch-selector';
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {BackHandler} from 'react-native';
 
 export default function Details(props) {
   const [isUserID, setUserID] = useState(null);
   const [isUserData, setUserData] = useState(null);
   const [isData, setData] = useState(null);
   const [isSwitch, setSwitch] = useState(1);
+  ///////////////////////////////////////////////////////////////////
+  function handleBackButtonClick() {
+    props.navigation.navigate('Flashcards');
+    return true;
+  }
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+    return () => {
+      BackHandler.removeEventListener(
+        'hardwareBackPress',
+        handleBackButtonClick,
+      );
+    };
+  }, []); //EVENT LISTENER TO LISTEN NATIVE ANDROID BACK BUTTON PRESS THUS RETURNING TO LIST HOME
   ////////////////////////////////////////////////////////////////////////////////
   const CurrentUserID = () => {
     AsyncStorage.getItem('currentUserID').then(val => {
@@ -71,9 +87,7 @@ export default function Details(props) {
     let subsets = null;
     if (isData) {
       let subsetObjects = isData.filter(
-        set =>
-          set.collection == props.route.params.prev &&
-          set.set == props.route.params.data,
+        set => set.set == props.route.params.data,
       ); //FILTER JSON OBJECTS ARRAY BY PROPERTIES
       console.log(subsetObjects);
       subsets = subsetObjects.map(doc => {
