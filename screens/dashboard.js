@@ -6,9 +6,11 @@ import {
   Platform,
   Dimensions,
   ScrollView,
+  FlatList,
   Text,
   View,
   Image,
+  TouchableHighlight,
   ActivityIndicator,
 } from 'react-native';
 import {PieChart} from 'react-native-chart-kit';
@@ -94,8 +96,7 @@ export default class Dashboard extends React.Component {
       let Arr = [['Example Set'], ['Example Set']];
       return Arr;
     }
-  };
-  /////////////////////////////////////////////////////////////////////////////////////////
+  }; //EXTRACTED USAGE DATA FOR CHART AND LIST
   componentDidMount() {
     this.CurrentUser();
   }
@@ -160,6 +161,26 @@ export default class Dashboard extends React.Component {
           </SafeAreaView>
         );
       } else {
+        ////////////////////////////////////////////////////////////////////////////////
+        const learning = PieData[0].map(element => {
+          return {title: element};
+        });
+        const learned = PieData[1].map(element => {
+          return {title: element};
+        });
+        /////////////////////////////////////////////////////////////////////////////////////////
+        const Item = ({title}) => (
+          <TouchableHighlight
+            style={{borderRadius: 10}}
+            underlayColor="#3395ff">
+            <View style={styles.item}>
+              <Text style={styles.title}>{title}</Text>
+            </View>
+          </TouchableHighlight>
+        );
+
+        const renderItem = ({item}) => <Item title={item} />;
+        /////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////
         const data = [
           {
@@ -179,30 +200,17 @@ export default class Dashboard extends React.Component {
         ];
         ////////////////////////////////////////////////////////////
         const userphoto = this.state.isUser.photoURL;
-        return (
-          <SafeAreaView style={styles.container}>
-            <Text
-              style={{
-                fontFamily: 'Rancho-Regular',
-                fontSize: 80,
-                textAlign: 'center',
-                color: 'white',
-                paddingBottom: 0,
-                marginBottom: 0,
-                paddingTop: 30,
-              }}>
-              Dashboard
-            </Text>
-
-            <ScrollView showsVerticalScrollIndicator={false}>
+        const Header = () => {
+          return (
+            <View>
               <Card
-                cornerRadius={15}
+                cornerRadius={10}
                 style={{
                   elevation: 0,
                   paddingTop: 30,
                   paddingBottom: 30,
                   marginTop: 20,
-                  backgroundColor: 'rgba(52, 52, 52, 0.1)',
+                  backgroundColor: 'rgba(255, 252, 259, 0.2)',
                   ...styles.containercard,
                 }}>
                 <View>
@@ -235,7 +243,8 @@ export default class Dashboard extends React.Component {
                 cornerRadius={20}
                 style={{
                   marginTop: 10,
-                  paddingBottom: 80,
+                  marginBottom: 80,
+                  paddingBottom: 10,
                   elevation: 0,
                   backgroundColor: 'rgba(52, 52, 52, 0.1)',
                 }}>
@@ -251,10 +260,49 @@ export default class Dashboard extends React.Component {
                   center={[10, -10]}
                   absolute
                 />
-                <Text style={styles.heading}>LEARNING</Text>
-                <Text style={styles.heading}>LEARNED</Text>
               </Card>
-            </ScrollView>
+
+              <Text style={styles.heading}>Currrently Learning</Text>
+            </View>
+          );
+        };
+        const Footer = () => {
+          return (
+            <SafeAreaView>
+              <Text style={styles.heading}>Already Learned</Text>
+              <FlatList
+                data={PieData[1]}
+                renderItem={renderItem}
+                keyExtractor={item => item}
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
+              />
+            </SafeAreaView>
+          );
+        };
+        return (
+          <SafeAreaView style={styles.container}>
+            <Text
+              style={{
+                fontFamily: 'Rancho-Regular',
+                fontSize: 80,
+                textAlign: 'center',
+                color: 'white',
+                paddingBottom: 0,
+                marginBottom: 0,
+                paddingTop: 30,
+              }}>
+              Dashboard
+            </Text>
+            <FlatList
+              data={PieData[0]}
+              renderItem={renderItem}
+              keyExtractor={item => item}
+              ListHeaderComponent={Header}
+              ListFooterComponent={Footer}
+              showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={false}
+            />
           </SafeAreaView>
         );
       }
@@ -287,16 +335,35 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  listcontainer: {
+    flex: 1,
+    alignContent: 'center',
+    justifyContent: 'center',
+  },
   heading: {
     color: 'white',
     fontWeight: 'bold',
     fontSize: 25,
     textAlign: 'center',
-    paddingTop: 10,
+    paddingTop: 30,
+    paddingBottom: 20,
   },
   buttons: {
     flexDirection: 'column',
     justifyContent: 'flex-start',
+  },
+  item: {
+    backgroundColor: 'white',
+    borderRadius: 8,
+    padding: 10,
+    marginVertical: 5,
+    marginHorizontal: 0,
+  },
+  title: {
+    fontSize: 22,
+    textAlign: 'center',
+    color: '#3395ff',
+    fontWeight: 'bold',
   },
 });
 
