@@ -162,17 +162,16 @@ export default class Dashboard extends React.Component {
         );
       } else {
         ////////////////////////////////////////////////////////////////////////////////
-        const learning = PieData[0].map(element => {
-          return {title: element};
-        });
-        const learned = PieData[1].map(element => {
-          return {title: element};
-        });
-        /////////////////////////////////////////////////////////////////////////////////////////
         const Item = ({title}) => (
           <TouchableHighlight
             style={{borderRadius: 10}}
-            underlayColor="#3395ff">
+            underlayColor="#3395ff"
+            onPress={() => {
+              this.props.navigation.navigate('FlashscardNav', {
+                screen: 'Details',
+                params: {data: title},
+              });
+            }}>
             <View style={styles.item}>
               <Text style={styles.title}>{title}</Text>
             </View>

@@ -25,6 +25,9 @@ export default class App extends React.Component {
       isUserData: null,
     };
   }
+  /////////////////////////////////////////////////////////////
+  //  COMPARE LOCAL DATA WITH ORIGIN AND PUSH TO ORIGIN IN NOT ANONYMOUS///////
+  ///////////////////////////////////////////////////
 
   render() {
     const valuePromise = AsyncStorage.getItem('isLoaded');

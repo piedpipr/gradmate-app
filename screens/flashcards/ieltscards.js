@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function Ielts({navigation}) {
+export default function Ielts(props) {
   const [isData, setData] = useState(null);
 
   ///////////////////////////////////////////////////////////////////////////////////
@@ -56,7 +56,7 @@ export default function Ielts({navigation}) {
     <TouchableHighlight
       style={{borderRadius: 10}}
       underlayColor="#3395ff"
-      onPress={() => navigation.navigate('ListSets', {data: title})}>
+      onPress={() => props.navigation.navigate('ListSets', {data: title})}>
       <View style={styles.item}>
         <Text style={styles.title}>{title}</Text>
       </View>
