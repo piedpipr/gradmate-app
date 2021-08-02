@@ -88,6 +88,8 @@ export default function List(props) {
           data={SetsData}
           renderItem={renderItem}
           keyExtractor={item => item.title}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
         />
       </SafeAreaView>
     );

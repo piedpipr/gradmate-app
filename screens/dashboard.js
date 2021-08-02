@@ -187,14 +187,14 @@ export default class Dashboard extends React.Component {
             name: 'Learning',
             population: PieData[0].length,
             color: '#febe29',
-            legendFontColor: 'white',
+            legendFontColor: '#3395ff',
             legendFontSize: 15,
           },
           {
             name: 'Learned',
             population: PieData[1].length,
             color: '#f75689',
-            legendFontColor: 'white',
+            legendFontColor: '#3395ff',
             legendFontSize: 15,
           },
         ];
@@ -204,13 +204,13 @@ export default class Dashboard extends React.Component {
           return (
             <View>
               <Card
-                cornerRadius={10}
+                cornerRadius={20}
                 style={{
                   elevation: 0,
                   paddingTop: 30,
                   paddingBottom: 30,
                   marginTop: 20,
-                  backgroundColor: 'rgba(255, 252, 259, 0.2)',
+                  backgroundColor: 'rgba(511, 349, 255, 0.85)',
                   ...styles.containercard,
                 }}>
                 <View>
@@ -231,7 +231,7 @@ export default class Dashboard extends React.Component {
                 <Text
                   style={{
                     fontSize: 30,
-                    color: 'white',
+                    color: '#3395ff',
                     paddingTop: 10,
                     paddingBottom: 0,
                     fontWeight: 'bold',
@@ -246,9 +246,9 @@ export default class Dashboard extends React.Component {
                   marginBottom: 80,
                   paddingBottom: 10,
                   elevation: 0,
-                  backgroundColor: 'rgba(52, 52, 52, 0.1)',
+                  backgroundColor: 'rgba(251, 255, 255, 0.9)',
                 }}>
-                <Text style={styles.heading}>STATS</Text>
+                <Text style={styles.stats}>STATS</Text>
                 <PieChart
                   data={data}
                   width={screenWidth}
@@ -339,6 +339,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignContent: 'center',
     justifyContent: 'center',
+  },
+  stats: {
+    color: '#3395ff',
+    fontWeight: 'bold',
+    fontSize: 25,
+    textAlign: 'center',
+    paddingTop: 30,
+    paddingBottom: 20,
   },
   heading: {
     color: 'white',

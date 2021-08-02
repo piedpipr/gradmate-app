@@ -82,6 +82,8 @@ export default function Ielts({navigation}) {
           renderItem={renderItem}
           keyExtractor={item => item.title}
           contentContainerStyle={styles.listcontainer}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
         />
       </SafeAreaView>
     );

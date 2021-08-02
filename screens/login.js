@@ -22,6 +22,7 @@ GoogleSignin.configure({
 const Separator = () => <View style={styles.separator} />;
 
 export default function Dashboard() {
+  //////////////////////////////////////////////////////////////////////////////
   async function onGoogleButtonPress() {
     // Get the users ID token
     const {idToken} = await GoogleSignin.signIn();
@@ -32,6 +33,7 @@ export default function Dashboard() {
     // Sign-in the user with the credential
     return auth().signInWithCredential(googleCredential);
   } //GOOGLE SIGN IN USING WEB CLIENT
+  //////////////////////////////////////////////////////////////////////////////
   const anonymousLogin = () => {
     auth()
       .signInAnonymously()
@@ -46,9 +48,10 @@ export default function Dashboard() {
         console.error(error);
       });
   }; //FIREBASE ANONYMOUS LOGIN
+  ////////////////////////////////////////////////////////////////////////////////
 
   let FetchGreDB = async () => {
-    const events = await firestore().collection('gre');
+    const events = await firestore().collection('test');
     events.get().then(querySnapshot => {
       const greDoc = querySnapshot.docs.map(doc => {
         return {id: doc.id, ...doc.data()};
@@ -65,8 +68,9 @@ export default function Dashboard() {
       }); //SAVE THE GRE OBJECTS TO ASYNCSTORAGE
     });
   };
+  ////////////////////////////////////////////////////////////////////////////////////
   let FetchIeltsDB = async () => {
-    const events = await firestore().collection('gre');
+    const events = await firestore().collection('test');
     events.get().then(querySnapshot => {
       const ieltsDoc = querySnapshot.docs.map(doc => {
         return {id: doc.id, ...doc.data()};
@@ -83,6 +87,7 @@ export default function Dashboard() {
       }); //SAVE THE IELTS OBJECTS TO ASYNCSTORAGE
     });
   };
+  ////////////////////////////////////////////////////////////////////////////////////////
 
   return (
     <SafeAreaView style={styles.container}>

@@ -29,26 +29,6 @@ export default function Details(props) {
     });
   }; //SHOWS CURRENT USER ID FROM ASYNCSTORAGE
 
-  ///////////////////////////////////////////////////////////////////////////////
-  let GetUserData = async () => {
-    const events = await firestore()
-      .collection('testusers') //CHANGE TO ORIGINSL USER COLLECTION
-      .doc(isUserID);
-    events
-      .get()
-      .then(documentSnapshot => {
-        console.log(documentSnapshot.data());
-        if (isUserData === null) {
-          setUserData(documentSnapshot.data());
-          console.log('Howdy Man');
-        }
-      })
-      .catch(error => {
-        console.log(error);
-        console.log('Error Showed');
-      }); //CHECKS IF THE LOGGED IN USER ALREADY EXISTIS IN USER COLLECTION, IF EXISTS RENDER APP OTHERWISE ADD USER DATA TO DB, WITH AUTH UID AS DOC ID
-  };
-
   ///////////////////////////////////////////////////////////////////////////////////
 
   const LocalData = () => {
@@ -66,7 +46,6 @@ export default function Details(props) {
   /////////////////////////////////////////////////////////////////////////////////
   useEffect(() => {
     CurrentUserID();
-    GetUserData();
   }, []);
 
   console.log('props.route.params.data');
@@ -154,6 +133,8 @@ export default function Details(props) {
           data={SubSetsData}
           renderItem={renderItem}
           keyExtractor={item => item.title}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
         />
       </SafeAreaView>
     );
