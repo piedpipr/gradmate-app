@@ -9,82 +9,51 @@ import {
   View,
   TouchableHighlight,
 } from 'react-native';
-import firestore from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function List(props) {
   const [isData, setData] = useState(null);
 
-  let FetchData = async () => {
-    const events = await firestore().collection('test');
-    events.get().then(querySnapshot => {
-      const tempDoc = querySnapshot.docs.map(doc => {
-        return {id: doc.id, ...doc.data()};
+  ///////////////////////////////////////////////////////////////////////////////////
+
+  const LocalData = () => {
+    if (isData == null) {
+      const valuePromise = AsyncStorage.getItem('GRE');
+      valuePromise.then(value => {
+        let val = JSON.parse(value);
+        setData(val);
       });
-      console.log(tempDoc);
-      setData(tempDoc);
-    });
-  };
+    }
+  }; // LOAD WORD DATA FROM LOCAL ASYNCSTORAGE
+
+  /////////////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
-    FetchData();
+    LocalData();
   }, []);
 
-  // if (isData) {
-  //   let collection = isData.map(doc => {
-  //     return {title: doc.collection};
-  //   });
-  //   collection = [...new Set(collection)];
-  //   console.log(collection);
-  // }
-  let previous = props.route.params.data;
+  let previous = props.route.params.data; //DATA FROM PREVIOUS SCREEN
 
-  console.log('props.route.params.data');
-  console.log(props.route.params.data);
   let setsData = () => {
     let sets = null;
     if (isData) {
       let setObjects = isData.filter(
         set => set.collection == props.route.params.data,
-      );
-      console.log(setObjects);
+      ); //WORD OBJETS HAVING COLLECTIONS = ROUTE PARAMETER FROM PREVIOUS SCREEN
+
       sets = setObjects.map(doc => {
         return {title: doc.set};
-      });
+      }); // RETURN ARRAY OF SET PROPERTY OF DOSC WITH MATCHING COLLECTION
       sets = Array.from(new Set(sets.map(d => d.title))).map(title => {
         return {
           title: title,
         };
-      });
+      }); // REMOVES REDUNDANT ELEMENT PAIRS
       console.log(sets);
     }
     return sets;
   };
   let SetsData = setsData();
-
-  //   let ShowSets = isData.filter(set => set.set === props.route.params.data);
-
-  // const set = isData.map(doc => {
-  //   if (doc.collection == x) {
-  //     return doc.set;
-  //   }
-  // // });
-
-  // const sub = e;
-
-  //   const DATA = [
-  //     {
-  //       id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-  //       title: 'First Item',
-  //     },
-  //     {
-  //       id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-  //       title: 'Second Item',
-  //     },
-  //     {
-  //       id: '58694a0f-3da1-471f-bd96-145571e29d72',
-  //       title: 'Third Item',
-  //     },
-  //   ];
 
   const Item = ({title}) => (
     <TouchableHighlight
@@ -114,10 +83,13 @@ export default function List(props) {
           }}>
           {props.route.params.data}
         </Text>
+
         <FlatList
           data={SetsData}
           renderItem={renderItem}
           keyExtractor={item => item.title}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
         />
       </SafeAreaView>
     );
@@ -146,19 +118,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
-// if (isData) {
-//   return <FlashCard words={isData} />;
-// } else {
-//   return (
-//     <SafeAreaView>
-//       <Text>Hello</Text>
-//       <Button
-//         marginRight="190px"
-//         color="#219ebc"
-//         title="Read"
-//         onPress={() => FetchData()}
-//       />
-//     </SafeAreaView>
-//   );
-// }

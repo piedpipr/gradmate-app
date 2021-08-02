@@ -12,34 +12,61 @@ import {
 } from 'react-native';
 import SwitchSelector from 'react-native-switch-selector';
 import firestore from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Details(props) {
+  const [isUserID, setUserID] = useState(null);
+  const [isUserData, setUserData] = useState(null);
   const [isData, setData] = useState(null);
-
-  let FetchData = async () => {
-    const events = await firestore().collection('test');
-    events.get().then(querySnapshot => {
-      const tempDoc = querySnapshot.docs.map(doc => {
-        return {id: doc.id, ...doc.data()};
-      });
-      console.log(tempDoc);
-      setData(tempDoc);
+  const [isSwitch, setSwitch] = useState(1);
+  ////////////////////////////////////////////////////////////////////////////////
+  const CurrentUserID = () => {
+    AsyncStorage.getItem('currentUserID').then(val => {
+      if (isUserID === null) {
+        console.log(val);
+        setUserID(val);
+      }
     });
-  };
+  }; //SHOWS CURRENT USER ID FROM ASYNCSTORAGE
 
+  ///////////////////////////////////////////////////////////////////////////////////
+
+  const LocalData = () => {
+    if (isData == null) {
+      const valuePromise = AsyncStorage.getItem('GRE');
+      valuePromise.then(value => {
+        let val = JSON.parse(value);
+        setData(val);
+        console.log(val);
+      });
+    }
+  };
+  LocalData(); // LOAD WORD DATA FROM LOCAL ASYNCSTORAGE
+
+  /////////////////////////////////////////////////////////////////////////////////
   useEffect(() => {
-    FetchData();
+    CurrentUserID();
   }, []);
 
-  // if (isData) {
-  //   let collection = isData.map(doc => {
-  //     return {title: doc.collection};
-  //   });
-  //   collection = [...new Set(collection)];
-  //   console.log(collection);
-  // }
   console.log('props.route.params.data');
   console.log(props.route.params.data);
+  ////////////////////////////////////////////////////////////////////////////////
+  const SwitchSelect = () => {
+    if (isSwitch === 1) {
+      console.log('Working22222');
+      let userdata = isUserData;
+      let Learned = userdata.learned.split(',');
+      let Learning = userdata.learning.split(',');
+      if (Learned.find(element => element === props.route.params.data)) {
+        setSwitch(2);
+      }
+      if (Learning.find(element => element === props.route.params.data)) {
+        setSwitch(0);
+      }
+    }
+  };
+
+  ///////////////////////////////////////////////////////////////////////////////
   let subsetsData = () => {
     let subsets = null;
     if (isData) {
@@ -47,46 +74,22 @@ export default function Details(props) {
         set =>
           set.collection == props.route.params.prev &&
           set.set == props.route.params.data,
-      );
+      ); //FILTER JSON OBJECTS ARRAY BY PROPERTIES
       console.log(subsetObjects);
       subsets = subsetObjects.map(doc => {
         return {title: doc.sub};
-      });
+      }); // RETURNS ARRAY OF ONLY 'TITLE:'SUB' PAIRS FOR ALL DOCS/OBJECTS
       subsets = Array.from(new Set(subsets.map(d => d.title))).map(title => {
         return {
           title: title,
         };
-      });
+      }); //REMOVES REDUNDANT DATA AND GIVES UNIQUE VALUES IN ARRAY
       console.log(subsets);
     }
     return subsets;
   };
   let SubSetsData = subsetsData();
-
-  //   let ShowSets = isData.filter(set => set.set === props.route.params.data);
-
-  // const set = isData.map(doc => {
-  //   if (doc.collection == x) {
-  //     return doc.set;
-  //   }
-  // // });
-
-  // const sub = e;
-
-  //   const DATA = [
-  //     {
-  //       id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-  //       title: 'First Item',
-  //     },
-  //     {
-  //       id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-  //       title: 'Second Item',
-  //     },
-  //     {
-  //       id: '58694a0f-3da1-471f-bd96-145571e29d72',
-  //       title: 'Third Item',
-  //     },
-  //   ];
+  ////////////////////////////////////////////////////////////////////////////////
 
   const Item = ({title}) => (
     <TouchableHighlight
@@ -114,7 +117,7 @@ export default function Details(props) {
           }}>
           {props.route.params.data}
         </Text>
-        <Text style={styles.heading}>SELECT STATUS</Text>
+        <Text style={styles.heading}>SET STATUS</Text>
         <SwitchSelector
           style={styles.switch}
           textColor={'#3395ff'}
@@ -122,7 +125,7 @@ export default function Details(props) {
           buttonColor={'#f7cf79'}
           bold={true}
           options={options}
-          initial={1}
+          initial={isSwitch}
           onPress={value => console.log(`Call onPress with value: ${value}`)}
         />
         <Text style={styles.heading}>CARD SETS</Text>
@@ -130,6 +133,8 @@ export default function Details(props) {
           data={SubSetsData}
           renderItem={renderItem}
           keyExtractor={item => item.title}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
         />
       </SafeAreaView>
     );

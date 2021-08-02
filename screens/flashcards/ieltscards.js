@@ -10,24 +10,27 @@ import {
   Platform,
   TouchableHighlight,
 } from 'react-native';
-import firestore from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Ielts({navigation}) {
   const [isData, setData] = useState(null);
 
-  let FetchData = async () => {
-    const events = await firestore().collection('test');
-    events.get().then(querySnapshot => {
-      const ieltsDoc = querySnapshot.docs.map(doc => {
-        return {id: doc.id, ...doc.data()};
+  ///////////////////////////////////////////////////////////////////////////////////
+
+  const LocalData = () => {
+    if (isData == null) {
+      const valuePromise = AsyncStorage.getItem('GRE');
+      valuePromise.then(value => {
+        let val = JSON.parse(value);
+        setData(val);
       });
-      console.log(ieltsDoc);
-      setData(ieltsDoc);
-    });
-  };
+    }
+  }; // LOAD WORD DATA FROM LOCAL ASYNCSTORAGE
+
+  /////////////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
-    FetchData();
+    LocalData();
   }, []);
 
   let collectionData = () => {
@@ -79,6 +82,8 @@ export default function Ielts({navigation}) {
           renderItem={renderItem}
           keyExtractor={item => item.title}
           contentContainerStyle={styles.listcontainer}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
         />
       </SafeAreaView>
     );

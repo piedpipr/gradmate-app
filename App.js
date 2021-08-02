@@ -39,7 +39,7 @@ export default class App extends React.Component {
     if (this.state.isLoggedIn == null) {
       auth().onAuthStateChanged(user => {
         if (user) {
-          ///////////////////////////////////
+          ///////////////////////////////////////////////////////////////////////////
           AsyncStorage.setItem('currentUser', JSON.stringify(user), err => {
             if (err) {
               console.log('an error with user asynchstorage');
@@ -48,12 +48,13 @@ export default class App extends React.Component {
             console.log('successfylly saved currentUser to local');
           }).catch(err => {
             console.log('error with user data saving is: ' + err);
-          }); //SAVE THE USER TO ASYNCSTORAGE
+          }); //SAVE THE AUTH USER OBJECT TO ASYNCSTORAGE
+          AsyncStorage.setItem('currentUserID', user.uid); //SAVES ONLY THE USER ID TO ASYNCSTORAGE
 
-          ///////////////////////////////
+          ////////////////////////////////////////////////////////////////////////////////////////////
           let userData = async () => {
             const events = await firestore()
-              .collection('testusers')
+              .collection('testusers') //CHANGE TO ORIGINSL USER COLLECTION
               .doc(user.uid);
             events
               .get()
@@ -63,31 +64,36 @@ export default class App extends React.Component {
                   console.log(data);
                   this.setState({isLoggedIn: true});
                 } else {
-                  function AddUserDB() {
-                    firestore()
-                      .collection('testusers')
-                      .doc(user.uid)
-                      .set({
-                        name: user.displayName,
-                        email: user.email,
-                      })
-                      .then(() => {
-                        console.log('User added! to Firestore');
-                        this.setState({isLoggedIn: true});
-                      });
+                  if (user.isAnonymous === false) {
+                    function AddUserDB() {
+                      firestore()
+                        .collection('testusers') //CHANGE TO ORIGINSL USER COLLECTION
+                        .doc(user.uid)
+                        .set({
+                          name: user.displayName,
+                          email: user.email,
+                          learned: null,
+                          learning: null,
+                        })
+                        .then(() => {
+                          console.log('User added! to Firestore');
+                          this.setState({isLoggedIn: true});
+                        });
+                    }
+                    AddUserDB();
+                  } else {
+                    console.log('User is Anonymous');
+                    this.setState({isLoggedIn: true});
                   }
-                  AddUserDB();
                 }
               })
               .catch(error => {
                 console.log(error);
                 console.log('Error Showed');
-              }); //CHECKS IF THE LOGGED IN USER ALREADY EXISTIS IN USER COLLECTION, IF EXISTS RENDER APP OTHERWISE ADD USER DATA TO DB
+              }); //CHECKS IF THE LOGGED IN USER ALREADY EXISTIS IN USER COLLECTION, IF EXISTS RENDER APP OTHERWISE ADD USER DATA TO DB, WITH AUTH UID AS DOC ID
           };
           userData();
           /////////////////////////
-
-          // this.setState({isLoggedIn: true});
           console.log(user);
         }
       });

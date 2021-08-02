@@ -37,13 +37,13 @@ export default class About extends React.Component {
         <Separator />
         <Separator />
         <View style={{marginHorizontal: 25, marginBottom: -100}}>
-          <Text style={{textAlign: 'center', fontSize: 18, color: '#219ebc'}}>
+          <Text style={{textAlign: 'center', fontSize: 16, color: '#219ebc'}}>
             This is my first ever app. This app was not meant to be professional
             rather educational for me, however I found that it could be useful
-            for some people. There are tons of features missing still. I hope
-            too integrate a functional Dashboard , Quiz and Challenge section in
-            the upcoming updates if I get to work. Thank you for installing :D{' '}
-            {'\n'}
+            for some people. There are tons of features still missing. I hope
+            too integrate a fully functional Dashboard , Quiz and Challenge
+            section in the upcoming updates if I get to work. Thank you for
+            installing :D {'\n'}
             {'\n'}
             {'\n'}Contact :{'\n'}gradmate@googlegroups.com
           </Text>
