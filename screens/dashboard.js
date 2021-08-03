@@ -5,7 +5,6 @@ import {
   StatusBar,
   Platform,
   Dimensions,
-  ScrollView,
   FlatList,
   Text,
   View,
@@ -28,7 +27,7 @@ export default class Dashboard extends React.Component {
       isUserData: null,
     }; // ISUSER = LOGGED IN USER DATA FROM AUTH, ISUSERDATA = USER APP USAGE DATA
   }
-  //////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////
   CurrentUser = () => {
     if (this.state.isUser == null) {
       const valuePromise = AsyncStorage.getItem('currentUser');
@@ -60,15 +59,15 @@ export default class Dashboard extends React.Component {
                   JSON.stringify(documentSnapshot.data()),
                 ); // SAVE DATA IN ASYNC FOR ORIGIN DATA
                 console.log('FETCHED ORIGIN USER DATA');
-                AsyncStorage.getItem('userLocal').then(item => {
-                  if (!item) {
-                    AsyncStorage.setItem(
-                      'userLocal',
-                      JSON.stringify(documentSnapshot.data()),
-                    );
-                    console.log('CREATED AND SAVED LOCAL USER DATA');
-                  }
-                }); // SAVE DATA IN ASYNC FOR 1st TIME USE IN LOCAL (IF LOCAL DOESN'T EXIST YET)
+                // AsyncStorage.getItem('userLocal').then(item => {
+                //   if (!item) {
+                //     AsyncStorage.setItem(
+                //       'userLocal',
+                //       JSON.stringify(documentSnapshot.data()),
+                //     );
+                //     console.log('CREATED AND SAVED LOCAL USER DATA');
+                //   }
+                // }); // SAVE DATA IN ASYNC FOR 1st TIME USE IN LOCAL (IF LOCAL DOESN'T EXIST YET)
                 this.setState({isUserData: documentSnapshot.data()});
               }
             })
@@ -114,6 +113,7 @@ export default class Dashboard extends React.Component {
               <Text
                 style={{
                   fontFamily: 'Rancho-Regular',
+                  textAlign: 'center',
                   fontSize: 80,
                   color: 'white',
                   paddingBottom: 30,
@@ -121,43 +121,43 @@ export default class Dashboard extends React.Component {
                 }}>
                 Dashboard
               </Text>
-              <Card
-                cornerRadius={15}
-                style={{
-                  elevation: 0,
-                  backgroundColor: 'white',
-                  ...styles.containercard,
-                }}>
-                <Image
-                  source={require('../assets/icons/user.png')}
-                  style={{width: 140, height: 140, borderRadius: 70}}
-                />
-                <Text
-                  style={{
-                    fontSize: 30,
-                    color: '#3395ff',
-                    paddingTop: 10,
-                    paddingBottom: 0,
-                    fontWeight: 'bold',
-                  }}>
-                  Anonymous
-                </Text>
-              </Card>
+            </View>
+            <Card
+              cornerRadius={15}
+              style={{
+                elevation: 0,
+                backgroundColor: 'white',
+                ...styles.containercard,
+              }}>
+              <Image
+                source={require('../assets/icons/user.png')}
+                style={{width: 140, height: 140, borderRadius: 70}}
+              />
               <Text
                 style={{
-                  textAlign: 'center',
-                  fontSize: 16,
-                  color: 'white',
-                  paddingTop: 60,
-                  paddingHorizontal: 25,
+                  fontSize: 30,
+                  color: '#3395ff',
+                  paddingTop: 10,
+                  paddingBottom: 0,
+                  fontWeight: 'bold',
                 }}>
-                Please login with Google to access your dashboard. In the
-                current build we are unable to provide dashboard functionality
-                to the anonymous user. {'\n'}
-                {'\n'}To login with Google clear the app data from Android
-                setting and re-run the app. Current data will be erased.
+                Anonymous
               </Text>
-            </View>
+            </Card>
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 16,
+                color: 'white',
+                paddingTop: 60,
+                paddingHorizontal: 25,
+              }}>
+              Please login with Google to access your dashboard. In the current
+              build we are unable to provide dashboard functionality to the
+              anonymous user. {'\n'}
+              {'\n'}To login with Google clear the app data from Android setting
+              and re-run the app. Current data will be erased.
+            </Text>
           </SafeAreaView>
         );
       } else {
@@ -184,14 +184,14 @@ export default class Dashboard extends React.Component {
         const data = [
           {
             name: 'Learning',
-            population: PieData[0].length,
+            population: PieData[0].length - 1,
             color: '#febe29',
             legendFontColor: '#3395ff',
             legendFontSize: 15,
           },
           {
             name: 'Learned',
-            population: PieData[1].length,
+            population: PieData[1].length - 1,
             color: '#f75689',
             legendFontColor: '#3395ff',
             legendFontSize: 15,

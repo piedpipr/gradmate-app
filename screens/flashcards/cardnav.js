@@ -1,7 +1,6 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import GreScreen from './grecards';
-import IeltsScreen from './ieltscards';
+import CollectionScreen from './collection';
 import FlashCardMenuScreen from './flashcards';
 import ListScreen from './listpage';
 import DetailsScreen from './details';
@@ -16,8 +15,7 @@ function CardNav() {
         headerShown: false,
       }}>
       <Stack.Screen name="Flashcards" component={FlashCardMenuScreen} />
-      <Stack.Screen name="GREFlashcards" component={GreScreen} />
-      <Stack.Screen name="IELTSFlashcards" component={IeltsScreen} />
+      <Stack.Screen name="Collection" component={CollectionScreen} />
       <Stack.Screen name="ListSets" component={ListScreen} />
       <Stack.Screen name="Details" component={DetailsScreen} />
       <Stack.Screen name="Flashcard" component={FlashCardScreen} />

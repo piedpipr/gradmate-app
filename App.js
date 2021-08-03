@@ -25,9 +25,6 @@ export default class App extends React.Component {
       isUserData: null,
     };
   }
-  /////////////////////////////////////////////////////////////
-  //  COMPARE LOCAL DATA WITH ORIGIN AND PUSH TO ORIGIN IN NOT ANONYMOUS///////
-  ///////////////////////////////////////////////////
 
   render() {
     const valuePromise = AsyncStorage.getItem('isLoaded');
@@ -75,8 +72,8 @@ export default class App extends React.Component {
                         .set({
                           name: user.displayName,
                           email: user.email,
-                          learned: null,
-                          learning: null,
+                          learned: 'YOUR SETS',
+                          learning: 'YOUR SETS',
                         })
                         .then(() => {
                           console.log('User added! to Firestore');

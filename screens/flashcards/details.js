@@ -12,11 +12,10 @@ import {
 } from 'react-native';
 import SwitchSelector from 'react-native-switch-selector';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {BackHandler} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 
 export default function Details(props) {
-  const [isUserID, setUserID] = useState(null);
+  const [isUser, setUser] = useState(null);
   const [isUserData, setUserData] = useState(null);
   const [isData, setData] = useState(null);
 
@@ -35,19 +34,22 @@ export default function Details(props) {
   //   };
   // }, []); //EVENT LISTENER TO LISTEN NATIVE ANDROID BACK BUTTON PRESS THUS RETURNING TO LIST HOME
   // ////////////////////////////////////////////////////////////////////////////////
-  const CurrentUserID = () => {
-    AsyncStorage.getItem('currentUserID').then(val => {
-      if (isUserID === null) {
-        console.log(val);
-        setUserID(val);
-      }
-    });
-  }; //SHOWS CURRENT USER ID FROM ASYNCSTORAGE
+  const CurrentUser = () => {
+    if (isUser == null) {
+      const valuePromise = AsyncStorage.getItem('currentUser');
+      valuePromise.then(value => {
+        let val = JSON.parse(value);
+        console.log('val.uid');
+        console.log(val.uid);
+        setUser(val);
+      });
+    }
+  }; // GET LOGGED IN USER DETAILS DOCUMENTSNAPSHOT SAVED IN ASYNCH FROM APP.JS
   ///////////////////////////////////////////////////////////////////////////////////
 
   const LocalData = () => {
     if (isData == null) {
-      const valuePromise = AsyncStorage.getItem('GRE');
+      const valuePromise = AsyncStorage.getItem('WORDS');
       valuePromise.then(value => {
         let val = JSON.parse(value);
         setData(val);
@@ -58,7 +60,7 @@ export default function Details(props) {
   LocalData(); // LOAD WORD DATA FROM LOCAL ASYNCSTORAGE
   /////////////////////////////////////////////////////////////////////////////////
   useEffect(() => {
-    CurrentUserID();
+    CurrentUser();
   }, []);
 
   console.log('props.route.params.data');
@@ -66,12 +68,16 @@ export default function Details(props) {
   ////////////////////////////////////////////////////////////////////////////////
   function ShowUserData() {
     if (!isUserData) {
-      const valuePromise = AsyncStorage.getItem('userOrigin');
-      valuePromise.then(value => {
-        console.log(JSON.parse(value));
-        let userdata = JSON.parse(value);
-        setUserData(userdata);
-      });
+      if (isUser) {
+        if (!isUser.isAnonymous) {
+          const valuePromise = AsyncStorage.getItem('userOrigin');
+          valuePromise.then(value => {
+            console.log(JSON.parse(value));
+            let userdata = JSON.parse(value);
+            setUserData(userdata);
+          });
+        }
+      }
     }
   }
   ShowUserData(); // SET ORIGIN DB USER DATA TO STATE
@@ -159,7 +165,17 @@ export default function Details(props) {
     const DATA = swdata();
     console.log(DATA[0].toString());
     console.log(DATA[1].toString());
-  } //RETURNS NEW/UPDATED USERDATA UPON USER SELECTION OF SWITCH
+    firestore()
+      .collection('testusers')
+      .doc(isUser.uid)
+      .update({
+        learning: DATA[0].toString(),
+        learned: DATA[1].toString(),
+      })
+      .then(() => {
+        console.log('User updated!');
+      });
+  } //RETURNS AND UPDATE NEW/UPDATED USERDATA UPON USER SELECTION OF SWITCH
   //////////////////////////////////////////////////////////////////////////////
   let subsetsData = () => {
     let subsets = null;
@@ -182,12 +198,14 @@ export default function Details(props) {
   };
   let SubSetsData = subsetsData();
   ////////////////////////////////////////////////////////////////////////////////
-
+  let previous = props.route.params.data; //DATA FROM PREVIOUS SCREEN
   const Item = ({title}) => (
     <TouchableHighlight
       underlayColor="#f75689"
       style={{borderRadius: 10, minWidth: '100%'}}
-      onPress={() => props.navigation.navigate('Flashcard', {data: title})}>
+      onPress={() =>
+        props.navigation.navigate('Flashcard', {data: title, prev: previous})
+      }>
       <View style={styles.item}>
         <Text style={styles.title}>Words From {title}</Text>
       </View>
@@ -236,6 +254,33 @@ export default function Details(props) {
         />
       </SafeAreaView>
     );
+  }
+  if (isData && isUser) {
+    if (!isUser.isAnonymous) {
+      return (
+        <SafeAreaView style={styles.container}>
+          <Text
+            style={{
+              fontSize: 40,
+              fontWeight: 'bold',
+              color: 'white',
+              textAlign: 'center',
+              paddingTop: 30,
+              paddingBottom: 30,
+            }}>
+            {props.route.params.data}
+          </Text>
+          <Text style={styles.heading}>CARD SETS</Text>
+          <FlatList
+            data={SubSetsData}
+            renderItem={renderItem}
+            keyExtractor={item => item.title}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+          />
+        </SafeAreaView>
+      );
+    }
   } else {
     return <ActivityIndicator />;
   }

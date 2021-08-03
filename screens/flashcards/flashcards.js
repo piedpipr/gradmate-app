@@ -37,7 +37,9 @@ export default class FlashCards extends React.Component {
         <View style={styles.cards}>
           <TouchableHighlight
             underlayColor="#febe29"
-            onPress={() => this.props.navigation.navigate('IELTSFlashcards')}>
+            onPress={() =>
+              this.props.navigation.navigate('Collection', {data: 'IELTS'})
+            }>
             <Card
               cornerRadius={15}
               style={{
@@ -54,7 +56,9 @@ export default class FlashCards extends React.Component {
           </TouchableHighlight>
           <TouchableHighlight
             underlayColor="#febe29"
-            onPress={() => this.props.navigation.navigate('GREFlashcards')}>
+            onPress={() =>
+              this.props.navigation.navigate('Collection', {data: 'GRE'})
+            }>
             <Card
               cornerRadius={15}
               style={{

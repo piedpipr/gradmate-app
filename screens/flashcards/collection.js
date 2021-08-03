@@ -12,14 +12,14 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function Gre({navigation}) {
+export default function Gre(props) {
   const [isData, setData] = useState(null);
 
   ///////////////////////////////////////////////////////////////////////////////////
 
   const LocalData = () => {
     if (isData == null) {
-      const valuePromise = AsyncStorage.getItem('GRE');
+      const valuePromise = AsyncStorage.getItem('WORDS');
       valuePromise.then(value => {
         let val = JSON.parse(value);
         setData(val);
@@ -36,7 +36,8 @@ export default function Gre({navigation}) {
   let collectionData = () => {
     let collection = null;
     if (isData) {
-      collection = isData.map(doc => {
+      let Objects = isData.filter(doc => doc.exam == props.route.params.data); //WORD OBJETS HAVING EXAM = ROUTE PARAMETER FROM PREVIOUS SCREEN
+      collection = Objects.map(doc => {
         return {title: doc.collection};
       });
       collection = Array.from(new Set(collection.map(d => d.title))).map(
@@ -56,7 +57,7 @@ export default function Gre({navigation}) {
     <TouchableHighlight
       style={{borderRadius: 10}}
       underlayColor="#3395ff"
-      onPress={() => navigation.navigate('ListSets', {data: title})}>
+      onPress={() => props.navigation.navigate('ListSets', {data: title})}>
       <View style={styles.item}>
         <Text style={styles.title}>{title}</Text>
       </View>

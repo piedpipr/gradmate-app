@@ -11,6 +11,7 @@ import {
   Image,
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function AddData() {
   function Add() {
@@ -25,22 +26,49 @@ export default function AddData() {
         parent_a: '',
         parent_b: '',
         parent_c: '',
-        synonyms: '',
-        word: '',
+        synonyms: null,
+        word: null,
       })
       .then(() => {
         console.log('User added!');
       });
   }
-  return <Button title="Add" onPress={() => Add()} />;
+  function ShowCurrentUser() {
+    const valuePromise = AsyncStorage.getItem('currentUser');
+    valuePromise.then(value => {
+      console.log(JSON.parse(value).uid);
+    });
+  } //SHOWS CURRENT USER OBJECT FROM ASYNCSTORAGE
+  function ShowUserData() {
+    const valuePromise = AsyncStorage.getItem('userOrigin');
+    valuePromise.then(value => {
+      console.log(JSON.parse(value));
+      let userdata = JSON.parse(value);
+      let Learned = userdata.learned.split(',');
+      let Learning = userdata.learning.split(',');
+      if (Learning.find(element => element == 'a')) {
+        console.log('ok');
+      }
+      let Arr = [Learning, Learned];
+      return Arr;
+    });
+  }
+  return (
+    <View style={styles.container}>
+      <Button title="AddWord" onPress={() => Add()} />
+      <Button title="Show Current User" onPress={() => ShowCurrentUser()} />
+      <Button title="Show User Data" onPress={() => ShowUserData()} />
+      <Button title="Check and Push" onPress={() => CheckData()} />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'stretch',
+    justifyContent: 'space-around',
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   title: {
