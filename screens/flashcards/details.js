@@ -13,6 +13,7 @@ import {
 import SwitchSelector from 'react-native-switch-selector';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BackHandler} from 'react-native';
+import firestore from '@react-native-firebase/firestore';
 
 export default function Details(props) {
   const [isUserID, setUserID] = useState(null);
@@ -76,7 +77,6 @@ export default function Details(props) {
   ShowUserData(); // SET ORIGIN DB USER DATA TO STATE
   ///////////////////////////////////////////////////////////////////////////////
   const SwitchSelect = () => {
-    console.log('Working22222');
     let userdata = isUserData;
     let Learned = userdata.learned.split(',');
     let Learning = userdata.learning.split(',');
@@ -91,6 +91,71 @@ export default function Details(props) {
     }
   }; //FUNCTION TO DETERMINE SWITCH INITIAL STATUS FROM USER DATA
   ///////////////////////////////////////////////////////////////////////////////
+  function SaveSwitchData(val) {
+    let userdata = isUserData;
+    let Learned = userdata.learned.split(',');
+    let Learning = userdata.learning.split(',');
+    if (val === 'LearningSet') {
+      let newLearning;
+      let newLearned;
+      if (Learning.find(element => element == props.route.params.data)) {
+        newLearning = Learning;
+      } else {
+        newLearning = Learning.concat(props.route.params.data);
+      }
+      if (Learned.find(element => element == props.route.params.data)) {
+        newLearned = Learned.filter(function (value, index, arr) {
+          return value !== props.route.params.data;
+        });
+      } else {
+        newLearned = Learned;
+      }
+      console.log('newLearning');
+      console.log(newLearning, newLearned);
+      return [newLearning, newLearned];
+    }
+    if (val === 'LearnedSet') {
+      let newLearning;
+      let newLearned;
+      if (Learned.find(element => element == props.route.params.data)) {
+        newLearned = Learned;
+      } else {
+        newLearned = Learned.concat(props.route.params.data);
+      }
+      if (Learning.find(element => element == props.route.params.data)) {
+        newLearning = Learning.filter(function (value, index, arr) {
+          return value !== props.route.params.data;
+        });
+      } else {
+        newLearning = Learning;
+      }
+      console.log('newLearned');
+      console.log(newLearning, newLearned);
+      return [newLearning, newLearned];
+    }
+    if (val === 'AuditingSet') {
+      let newLearning;
+      let newLearned;
+      if (Learned.find(element => element == props.route.params.data)) {
+        newLearned = Learned.filter(function (value, index, arr) {
+          return value !== props.route.params.data;
+        });
+      } else {
+        newLearned = Learned;
+      }
+      if (Learning.find(element => element == props.route.params.data)) {
+        newLearning = Learning.filter(function (value, index, arr) {
+          return value !== props.route.params.data;
+        });
+      } else {
+        newLearning = Learning;
+      }
+      console.log('newAudit');
+      console.log(newLearning, newLearned);
+      return [newLearning, newLearned];
+    }
+  } //RETURNS NEW/UPDATED USERDATA UPON USER SELECTION OF SWITCH
+  //////////////////////////////////////////////////////////////////////////////
   let subsetsData = () => {
     let subsets = null;
     if (isData) {
@@ -127,11 +192,10 @@ export default function Details(props) {
   const renderItem = ({item}) => <Item title={item.title} />;
   if (isData && isUserData) {
     const switchVal = SwitchSelect();
-    console.log(typeof switchVal);
     const options = [
-      {label: 'Learning', value: '1'},
-      {label: 'Auditing', value: '1.5'},
-      {label: 'Learned', value: '2'},
+      {label: 'Learning', value: 'LearningSet'},
+      {label: 'Auditing', value: 'AuditingSet'},
+      {label: 'Learned', value: 'LearnedSet'},
     ];
     return (
       <SafeAreaView style={styles.container}>
@@ -155,7 +219,7 @@ export default function Details(props) {
           bold={true}
           options={options}
           initial={switchVal}
-          onPress={value => console.log(`Call onPress with value: ${value}`)}
+          onPress={value => SaveSwitchData(value)}
         />
         <Text style={styles.heading}>CARD SETS</Text>
         <FlatList
