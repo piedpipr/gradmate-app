@@ -113,6 +113,7 @@ export default class Dashboard extends React.Component {
               <Text
                 style={{
                   fontFamily: 'Rancho-Regular',
+                  textAlign: 'center',
                   fontSize: 80,
                   color: 'white',
                   paddingBottom: 30,
@@ -120,43 +121,43 @@ export default class Dashboard extends React.Component {
                 }}>
                 Dashboard
               </Text>
-              <Card
-                cornerRadius={15}
-                style={{
-                  elevation: 0,
-                  backgroundColor: 'white',
-                  ...styles.containercard,
-                }}>
-                <Image
-                  source={require('../assets/icons/user.png')}
-                  style={{width: 140, height: 140, borderRadius: 70}}
-                />
-                <Text
-                  style={{
-                    fontSize: 30,
-                    color: '#3395ff',
-                    paddingTop: 10,
-                    paddingBottom: 0,
-                    fontWeight: 'bold',
-                  }}>
-                  Anonymous
-                </Text>
-              </Card>
+            </View>
+            <Card
+              cornerRadius={15}
+              style={{
+                elevation: 0,
+                backgroundColor: 'white',
+                ...styles.containercard,
+              }}>
+              <Image
+                source={require('../assets/icons/user.png')}
+                style={{width: 140, height: 140, borderRadius: 70}}
+              />
               <Text
                 style={{
-                  textAlign: 'center',
-                  fontSize: 16,
-                  color: 'white',
-                  paddingTop: 60,
-                  paddingHorizontal: 25,
+                  fontSize: 30,
+                  color: '#3395ff',
+                  paddingTop: 10,
+                  paddingBottom: 0,
+                  fontWeight: 'bold',
                 }}>
-                Please login with Google to access your dashboard. In the
-                current build we are unable to provide dashboard functionality
-                to the anonymous user. {'\n'}
-                {'\n'}To login with Google clear the app data from Android
-                setting and re-run the app. Current data will be erased.
+                Anonymous
               </Text>
-            </View>
+            </Card>
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 16,
+                color: 'white',
+                paddingTop: 60,
+                paddingHorizontal: 25,
+              }}>
+              Please login with Google to access your dashboard. In the current
+              build we are unable to provide dashboard functionality to the
+              anonymous user. {'\n'}
+              {'\n'}To login with Google clear the app data from Android setting
+              and re-run the app. Current data will be erased.
+            </Text>
           </SafeAreaView>
         );
       } else {

@@ -15,7 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
 
 export default function Details(props) {
-  const [isUserID, setUserID] = useState(null);
+  const [isUser, setUser] = useState(null);
   const [isUserData, setUserData] = useState(null);
   const [isData, setData] = useState(null);
 
@@ -34,14 +34,17 @@ export default function Details(props) {
   //   };
   // }, []); //EVENT LISTENER TO LISTEN NATIVE ANDROID BACK BUTTON PRESS THUS RETURNING TO LIST HOME
   // ////////////////////////////////////////////////////////////////////////////////
-  const CurrentUserID = () => {
-    AsyncStorage.getItem('currentUserID').then(val => {
-      if (isUserID === null) {
-        console.log(val);
-        setUserID(val);
-      }
-    });
-  }; //SHOWS CURRENT USER ID FROM ASYNCSTORAGE
+  const CurrentUser = () => {
+    if (isUser == null) {
+      const valuePromise = AsyncStorage.getItem('currentUser');
+      valuePromise.then(value => {
+        let val = JSON.parse(value);
+        console.log('val.uid');
+        console.log(val.uid);
+        setUser(val);
+      });
+    }
+  }; // GET LOGGED IN USER DETAILS DOCUMENTSNAPSHOT SAVED IN ASYNCH FROM APP.JS
   ///////////////////////////////////////////////////////////////////////////////////
 
   const LocalData = () => {
@@ -57,7 +60,7 @@ export default function Details(props) {
   LocalData(); // LOAD WORD DATA FROM LOCAL ASYNCSTORAGE
   /////////////////////////////////////////////////////////////////////////////////
   useEffect(() => {
-    CurrentUserID();
+    CurrentUser();
   }, []);
 
   console.log('props.route.params.data');
@@ -65,12 +68,16 @@ export default function Details(props) {
   ////////////////////////////////////////////////////////////////////////////////
   function ShowUserData() {
     if (!isUserData) {
-      const valuePromise = AsyncStorage.getItem('userOrigin');
-      valuePromise.then(value => {
-        console.log(JSON.parse(value));
-        let userdata = JSON.parse(value);
-        setUserData(userdata);
-      });
+      if (isUser) {
+        if (!isUser.isAnonymous) {
+          const valuePromise = AsyncStorage.getItem('userOrigin');
+          valuePromise.then(value => {
+            console.log(JSON.parse(value));
+            let userdata = JSON.parse(value);
+            setUserData(userdata);
+          });
+        }
+      }
     }
   }
   ShowUserData(); // SET ORIGIN DB USER DATA TO STATE
@@ -160,7 +167,7 @@ export default function Details(props) {
     console.log(DATA[1].toString());
     firestore()
       .collection('testusers')
-      .doc(isUserID)
+      .doc(isUser.uid)
       .update({
         learning: DATA[0].toString(),
         learned: DATA[1].toString(),
@@ -168,7 +175,7 @@ export default function Details(props) {
       .then(() => {
         console.log('User updated!');
       });
-  } //RETURNS NEW/UPDATED USERDATA UPON USER SELECTION OF SWITCH
+  } //RETURNS AND UPDATE NEW/UPDATED USERDATA UPON USER SELECTION OF SWITCH
   //////////////////////////////////////////////////////////////////////////////
   let subsetsData = () => {
     let subsets = null;
@@ -247,6 +254,33 @@ export default function Details(props) {
         />
       </SafeAreaView>
     );
+  }
+  if (isData && isUser) {
+    if (!isUser.isAnonymous) {
+      return (
+        <SafeAreaView style={styles.container}>
+          <Text
+            style={{
+              fontSize: 40,
+              fontWeight: 'bold',
+              color: 'white',
+              textAlign: 'center',
+              paddingTop: 30,
+              paddingBottom: 30,
+            }}>
+            {props.route.params.data}
+          </Text>
+          <Text style={styles.heading}>CARD SETS</Text>
+          <FlatList
+            data={SubSetsData}
+            renderItem={renderItem}
+            keyExtractor={item => item.title}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+          />
+        </SafeAreaView>
+      );
+    }
   } else {
     return <ActivityIndicator />;
   }
