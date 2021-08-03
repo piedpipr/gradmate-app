@@ -11,7 +11,6 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import SwitchSelector from 'react-native-switch-selector';
-import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BackHandler} from 'react-native';
 
@@ -19,13 +18,12 @@ export default function Details(props) {
   const [isUserID, setUserID] = useState(null);
   const [isUserData, setUserData] = useState(null);
   const [isData, setData] = useState(null);
-  const [isSwitch, setSwitch] = useState(1);
-  ///////////////////////////////////////////////////////////////////
+
+  ///////////////////////////////////////////////////////////////////////////////
   function handleBackButtonClick() {
     props.navigation.navigate('Flashcards');
     return true;
   }
-
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
     return () => {
@@ -44,7 +42,6 @@ export default function Details(props) {
       }
     });
   }; //SHOWS CURRENT USER ID FROM ASYNCSTORAGE
-
   ///////////////////////////////////////////////////////////////////////////////////
 
   const LocalData = () => {
@@ -58,7 +55,6 @@ export default function Details(props) {
     }
   };
   LocalData(); // LOAD WORD DATA FROM LOCAL ASYNCSTORAGE
-
   /////////////////////////////////////////////////////////////////////////////////
   useEffect(() => {
     CurrentUserID();
@@ -67,21 +63,33 @@ export default function Details(props) {
   console.log('props.route.params.data');
   console.log(props.route.params.data);
   ////////////////////////////////////////////////////////////////////////////////
-  const SwitchSelect = () => {
-    if (isSwitch === 1) {
-      console.log('Working22222');
-      let userdata = isUserData;
-      let Learned = userdata.learned.split(',');
-      let Learning = userdata.learning.split(',');
-      if (Learned.find(element => element === props.route.params.data)) {
-        setSwitch(2);
-      }
-      if (Learning.find(element => element === props.route.params.data)) {
-        setSwitch(0);
-      }
+  function ShowUserData() {
+    if (!isUserData) {
+      const valuePromise = AsyncStorage.getItem('userOrigin');
+      valuePromise.then(value => {
+        console.log(JSON.parse(value));
+        let userdata = JSON.parse(value);
+        setUserData(userdata);
+      });
     }
-  };
-
+  }
+  ShowUserData(); // SET ORIGIN DB USER DATA TO STATE
+  ///////////////////////////////////////////////////////////////////////////////
+  const SwitchSelect = () => {
+    console.log('Working22222');
+    let userdata = isUserData;
+    let Learned = userdata.learned.split(',');
+    let Learning = userdata.learning.split(',');
+    if (Learning.find(element => element == props.route.params.data)) {
+      console.log('Found');
+      return 0;
+    }
+    if (Learned.find(element => element == props.route.params.data)) {
+      return 2;
+    } else {
+      return 1;
+    }
+  }; //FUNCTION TO DETERMINE SWITCH INITIAL STATUS FROM USER DATA
   ///////////////////////////////////////////////////////////////////////////////
   let subsetsData = () => {
     let subsets = null;
@@ -117,7 +125,14 @@ export default function Details(props) {
   );
 
   const renderItem = ({item}) => <Item title={item.title} />;
-  if (isData) {
+  if (isData && isUserData) {
+    const switchVal = SwitchSelect();
+    console.log(typeof switchVal);
+    const options = [
+      {label: 'Learning', value: '1'},
+      {label: 'Auditing', value: '1.5'},
+      {label: 'Learned', value: '2'},
+    ];
     return (
       <SafeAreaView style={styles.container}>
         <Text
@@ -139,7 +154,7 @@ export default function Details(props) {
           buttonColor={'#f7cf79'}
           bold={true}
           options={options}
-          initial={isSwitch}
+          initial={switchVal}
           onPress={value => console.log(`Call onPress with value: ${value}`)}
         />
         <Text style={styles.heading}>CARD SETS</Text>
@@ -191,24 +206,3 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
 });
-
-// if (isData) {
-//   return <FlashCard words={isData} />;
-// } else {
-//   return (
-//     <SafeAreaView>
-//       <Text>Hello</Text>
-//       <Button
-//         marginRight="190px"
-//         color="#219ebc"
-//         title="Read"
-//         onPress={() => FetchData()}
-//       />
-//     </SafeAreaView>
-//   );
-// }
-const options = [
-  {label: 'Learning', value: '1'},
-  {label: 'Auditing', value: '1.5'},
-  {label: 'Learned', value: '2'},
-];
