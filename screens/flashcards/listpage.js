@@ -18,7 +18,7 @@ export default function List(props) {
 
   const LocalData = () => {
     if (isData == null) {
-      const valuePromise = AsyncStorage.getItem('GRE');
+      const valuePromise = AsyncStorage.getItem('WORDS');
       valuePromise.then(value => {
         let val = JSON.parse(value);
         setData(val);

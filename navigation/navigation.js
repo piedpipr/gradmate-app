@@ -20,7 +20,7 @@ const Tabs = () => {
           backgroundColor: 'white',
         },
       }}>
-      <Tab.Screen
+      {/* <Tab.Screen
         name="DBAdd"
         component={Test1Screen}
         options={{
@@ -45,7 +45,7 @@ const Tabs = () => {
             </View>
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Dashboard"
         component={DashboardScreen}
