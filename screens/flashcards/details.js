@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 import SwitchSelector from 'react-native-switch-selector';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {BackHandler} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 
 export default function Details(props) {
@@ -47,7 +46,7 @@ export default function Details(props) {
 
   const LocalData = () => {
     if (isData == null) {
-      const valuePromise = AsyncStorage.getItem('GRE');
+      const valuePromise = AsyncStorage.getItem('WORDS');
       valuePromise.then(value => {
         let val = JSON.parse(value);
         setData(val);
@@ -159,6 +158,16 @@ export default function Details(props) {
     const DATA = swdata();
     console.log(DATA[0].toString());
     console.log(DATA[1].toString());
+    firestore()
+      .collection('testusers')
+      .doc(isUserID)
+      .update({
+        learning: DATA[0].toString(),
+        learned: DATA[1].toString(),
+      })
+      .then(() => {
+        console.log('User updated!');
+      });
   } //RETURNS NEW/UPDATED USERDATA UPON USER SELECTION OF SWITCH
   //////////////////////////////////////////////////////////////////////////////
   let subsetsData = () => {
@@ -182,12 +191,14 @@ export default function Details(props) {
   };
   let SubSetsData = subsetsData();
   ////////////////////////////////////////////////////////////////////////////////
-
+  let previous = props.route.params.data; //DATA FROM PREVIOUS SCREEN
   const Item = ({title}) => (
     <TouchableHighlight
       underlayColor="#f75689"
       style={{borderRadius: 10, minWidth: '100%'}}
-      onPress={() => props.navigation.navigate('Flashcard', {data: title})}>
+      onPress={() =>
+        props.navigation.navigate('Flashcard', {data: title, prev: previous})
+      }>
       <View style={styles.item}>
         <Text style={styles.title}>Words From {title}</Text>
       </View>

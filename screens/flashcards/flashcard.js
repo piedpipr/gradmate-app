@@ -14,33 +14,45 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
 
 const FlashCard = props => {
-  const [showRealApp, setShowRealApp] = useState(false);
   const [isData, setData] = useState(null);
 
-  let FetchData = async () => {
-    const events = await firestore()
-      .collection('test')
-      .where('set', '==', props.route.params.data);
-    events.get().then(querySnapshot => {
-      const tempDoc = querySnapshot.docs.map(doc => {
-        return {id: doc.id, ...doc.data()};
-      });
-      console.log(tempDoc);
-      setData(tempDoc);
-    });
-  };
+  ///////////////////////////////////////////////////////////////////////////////////
 
+  const LocalData = () => {
+    if (isData == null) {
+      const valuePromise = AsyncStorage.getItem('WORDS');
+      valuePromise.then(value => {
+        let val = JSON.parse(value);
+        setData(val);
+        console.log(val);
+      });
+    }
+  };
+  LocalData(); // LOAD WORD DATA FROM LOCAL ASYNCSTORAGE
+  /////////////////////////////////////////////////////////////////////////////////
+  let wordData = () => {
+    let words = null;
+    if (isData) {
+      words = isData.filter(
+        doc =>
+          doc.set == props.route.params.prev &&
+          doc.sub == props.route.params.data,
+      ); //WORD OBJETS HAVING COLLECTIONS = ROUTE PARAMETER FROM PREVIOUS SCREEN
+      console.log(words);
+    }
+    return words;
+  };
+  let DATA = wordData();
+  ////////////////////////////////////////////////////////////////////////////////
   useEffect(() => {
-    FetchData();
+    LocalData();
   }, []);
 
   const onDone = () => {
-    AsyncStorage.setItem('isAppLoaded', 'yes');
-    setShowRealApp(true);
+    props.navigation.goBack();
   };
   const onSkip = () => {
-    AsyncStorage.setItem('isAppLoaded', 'yes');
-    setShowRealApp(true);
+    props.navigation.goBack();
   };
 
   let animatedValue = new Animated.Value(0);
@@ -332,7 +344,7 @@ const slides = [
     title: 'Best collections at the same place',
     meaning: 'Hello World',
     image: {
-      uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_mobile_recharge.png',
+      uri: 'https://avatars.githubusercontent.com/u/43669876?v=4',
     },
   },
   {
@@ -344,6 +356,8 @@ const slides = [
     word: 'abound',
     meaning: 'plenty',
     example: 'abound of money',
-    image: 'src',
+    image: {
+      uri: 'https://avatars.githubusercontent.com/u/43669876?v=4',
+    },
   },
 ];
