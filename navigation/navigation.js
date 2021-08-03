@@ -50,6 +50,7 @@ const Tabs = () => {
         name="Dashboard"
         component={DashboardScreen}
         options={{
+          unmountOnBlur: true,
           tabBarIcon: ({focused}) => (
             <View style={{alignItems: 'center', justifyContent: 'center'}}>
               <Image
@@ -75,7 +76,15 @@ const Tabs = () => {
       <Tab.Screen
         name="FlashscardNav"
         component={FlashcardNavScreen}
+        listeners={({navigation, route}) => ({
+          tabPress: e => {
+            navigation.navigate('FlashscardNav', {
+              screen: 'Flashcards',
+            });
+          },
+        })}
         options={{
+          unmountOnBlur: false,
           tabBarIcon: ({focused}) => (
             <View style={{alignItems: 'center', justifyContent: 'center'}}>
               <Image
