@@ -20,21 +20,21 @@ export default function Details(props) {
   const [isUserData, setUserData] = useState(null);
   const [isData, setData] = useState(null);
 
-  ///////////////////////////////////////////////////////////////////////////////
-  function handleBackButtonClick() {
-    props.navigation.navigate('Flashcards');
-    return true;
-  }
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
-    return () => {
-      BackHandler.removeEventListener(
-        'hardwareBackPress',
-        handleBackButtonClick,
-      );
-    };
-  }, []); //EVENT LISTENER TO LISTEN NATIVE ANDROID BACK BUTTON PRESS THUS RETURNING TO LIST HOME
-  ////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////
+  // function handleBackButtonClick() {
+  //   props.navigation.navigate('Flashcards');
+  //   return true;
+  // }
+  // useEffect(() => {
+  //   BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+  //   return () => {
+  //     BackHandler.removeEventListener(
+  //       'hardwareBackPress',
+  //       handleBackButtonClick,
+  //     );
+  //   };
+  // }, []); //EVENT LISTENER TO LISTEN NATIVE ANDROID BACK BUTTON PRESS THUS RETURNING TO LIST HOME
+  // ////////////////////////////////////////////////////////////////////////////////
   const CurrentUserID = () => {
     AsyncStorage.getItem('currentUserID').then(val => {
       if (isUserID === null) {
@@ -92,68 +92,73 @@ export default function Details(props) {
   }; //FUNCTION TO DETERMINE SWITCH INITIAL STATUS FROM USER DATA
   ///////////////////////////////////////////////////////////////////////////////
   function SaveSwitchData(val) {
-    let userdata = isUserData;
-    let Learned = userdata.learned.split(',');
-    let Learning = userdata.learning.split(',');
-    if (val === 'LearningSet') {
-      let newLearning;
-      let newLearned;
-      if (Learning.find(element => element == props.route.params.data)) {
-        newLearning = Learning;
-      } else {
-        newLearning = Learning.concat(props.route.params.data);
+    const swdata = () => {
+      let userdata = isUserData;
+      let Learned = userdata.learned.split(',');
+      let Learning = userdata.learning.split(',');
+      if (val === 'LearningSet') {
+        let newLearning;
+        let newLearned;
+        if (Learning.find(element => element == props.route.params.data)) {
+          newLearning = Learning;
+        } else {
+          newLearning = Learning.concat(props.route.params.data);
+        }
+        if (Learned.find(element => element == props.route.params.data)) {
+          newLearned = Learned.filter(function (value, index, arr) {
+            return value !== props.route.params.data;
+          });
+        } else {
+          newLearned = Learned;
+        }
+        console.log('newLearning');
+        console.log(newLearning, newLearned);
+        return [newLearning, newLearned];
       }
-      if (Learned.find(element => element == props.route.params.data)) {
-        newLearned = Learned.filter(function (value, index, arr) {
-          return value !== props.route.params.data;
-        });
-      } else {
-        newLearned = Learned;
+      if (val === 'LearnedSet') {
+        let newLearning;
+        let newLearned;
+        if (Learned.find(element => element == props.route.params.data)) {
+          newLearned = Learned;
+        } else {
+          newLearned = Learned.concat(props.route.params.data);
+        }
+        if (Learning.find(element => element == props.route.params.data)) {
+          newLearning = Learning.filter(function (value, index, arr) {
+            return value !== props.route.params.data;
+          });
+        } else {
+          newLearning = Learning;
+        }
+        console.log('newLearned');
+        console.log(newLearning, newLearned);
+        return [newLearning, newLearned];
       }
-      console.log('newLearning');
-      console.log(newLearning, newLearned);
-      return [newLearning, newLearned];
-    }
-    if (val === 'LearnedSet') {
-      let newLearning;
-      let newLearned;
-      if (Learned.find(element => element == props.route.params.data)) {
-        newLearned = Learned;
-      } else {
-        newLearned = Learned.concat(props.route.params.data);
+      if (val === 'AuditingSet') {
+        let newLearning;
+        let newLearned;
+        if (Learned.find(element => element == props.route.params.data)) {
+          newLearned = Learned.filter(function (value, index, arr) {
+            return value !== props.route.params.data;
+          });
+        } else {
+          newLearned = Learned;
+        }
+        if (Learning.find(element => element == props.route.params.data)) {
+          newLearning = Learning.filter(function (value, index, arr) {
+            return value !== props.route.params.data;
+          });
+        } else {
+          newLearning = Learning;
+        }
+        console.log('newAudit');
+        console.log(newLearning, newLearned);
+        return [newLearning, newLearned];
       }
-      if (Learning.find(element => element == props.route.params.data)) {
-        newLearning = Learning.filter(function (value, index, arr) {
-          return value !== props.route.params.data;
-        });
-      } else {
-        newLearning = Learning;
-      }
-      console.log('newLearned');
-      console.log(newLearning, newLearned);
-      return [newLearning, newLearned];
-    }
-    if (val === 'AuditingSet') {
-      let newLearning;
-      let newLearned;
-      if (Learned.find(element => element == props.route.params.data)) {
-        newLearned = Learned.filter(function (value, index, arr) {
-          return value !== props.route.params.data;
-        });
-      } else {
-        newLearned = Learned;
-      }
-      if (Learning.find(element => element == props.route.params.data)) {
-        newLearning = Learning.filter(function (value, index, arr) {
-          return value !== props.route.params.data;
-        });
-      } else {
-        newLearning = Learning;
-      }
-      console.log('newAudit');
-      console.log(newLearning, newLearned);
-      return [newLearning, newLearned];
-    }
+    };
+    const DATA = swdata();
+    console.log(DATA[0].toString());
+    console.log(DATA[1].toString());
   } //RETURNS NEW/UPDATED USERDATA UPON USER SELECTION OF SWITCH
   //////////////////////////////////////////////////////////////////////////////
   let subsetsData = () => {
