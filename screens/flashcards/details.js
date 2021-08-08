@@ -166,7 +166,7 @@ export default function Details(props) {
     console.log(DATA[0].toString());
     console.log(DATA[1].toString());
     firestore()
-      .collection('testusers')
+      .collection('UsersCollection')
       .doc(isUser.uid)
       .update({
         learning: DATA[0].toString(),
@@ -229,9 +229,19 @@ export default function Details(props) {
             color: 'white',
             textAlign: 'center',
             paddingTop: 30,
-            paddingBottom: 30,
+            paddingBottom: 5,
           }}>
           {props.route.params.data}
+        </Text>
+        <Text
+          style={{
+            fontSize: 20,
+            color: 'white',
+            textAlign: 'center',
+            paddingTop: 0,
+            paddingBottom: 30,
+          }}>
+          {props.route.params.prev}
         </Text>
         <Text style={styles.heading}>SET STATUS</Text>
         <SwitchSelector
@@ -266,9 +276,19 @@ export default function Details(props) {
               color: 'white',
               textAlign: 'center',
               paddingTop: 30,
-              paddingBottom: 30,
+              paddingBottom: 5,
             }}>
             {props.route.params.data}
+          </Text>
+          <Text
+            style={{
+              fontSize: 20,
+              color: 'white',
+              textAlign: 'center',
+              paddingTop: 0,
+              paddingBottom: 30,
+            }}>
+            {props.route.params.prev}
           </Text>
           <Text style={styles.heading}>CARD SETS</Text>
           <FlatList
@@ -309,7 +329,6 @@ const styles = StyleSheet.create({
   },
   heading: {
     color: 'white',
-    fontWeight: 'bold',
     fontSize: 25,
     textAlign: 'center',
     paddingTop: 10,
