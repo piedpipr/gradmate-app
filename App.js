@@ -54,7 +54,7 @@ export default class App extends React.Component {
           ////////////////////////////////////////////////////////////////////////////////////////////
           let userData = async () => {
             const events = await firestore()
-              .collection('testusers') //CHANGE TO ORIGINSL USER COLLECTION
+              .collection('UsersCOLLECTION') //CHANGE TO ORIGINSL USER COLLECTION
               .doc(user.uid);
             events
               .get()
@@ -65,9 +65,9 @@ export default class App extends React.Component {
                   this.setState({isLoggedIn: true});
                 } else {
                   if (user.isAnonymous === false) {
-                    function AddUserDB() {
+                    let AddUserDB = () => {
                       firestore()
-                        .collection('testusers') //CHANGE TO ORIGINSL USER COLLECTION
+                        .collection('UsersCOLLECTION') //CHANGE TO ORIGINSL USER COLLECTION
                         .doc(user.uid)
                         .set({
                           name: user.displayName,
@@ -79,7 +79,7 @@ export default class App extends React.Component {
                           console.log('User added! to Firestore');
                           this.setState({isLoggedIn: true});
                         });
-                    }
+                    };
                     AddUserDB();
                   } else {
                     console.log('User is Anonymous');

@@ -8,10 +8,10 @@ import {
   TouchableWithoutFeedback,
   Animated,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import firestore from '@react-native-firebase/firestore';
 
 const FlashCard = props => {
   const [isData, setData] = useState(null);
@@ -142,18 +142,21 @@ const FlashCard = props => {
                 {elevation: elevationFront},
                 {opacity: frontOpacity},
               ]}>
-              <Text
+              <View
                 style={{
-                  fontSize: 20,
-                  paddingTop: 8,
-                  paddingLeft: 8,
-                  color: 'black',
-                  lineHeight: 20,
+                  flex: 1,
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}>
-                Given Word {item.title} - <Text style={{fontSize: 8}}>KPI</Text>
-              </Text>
-
-              <Text style={styles.introTextStyle}>{item.text}</Text>
+                <Text
+                  style={{
+                    fontSize: 50,
+                    color: '#493e3e',
+                    textAlign: 'center',
+                  }}>
+                  {item.word}
+                </Text>
+              </View>
             </Animated.View>
 
             <Animated.View
@@ -163,80 +166,28 @@ const FlashCard = props => {
                 {elevation: elevationBack},
                 {opacity: backOpacity},
               ]}>
-              <Image style={styles.introImageStyle} source={item.image} />
+              <Image
+                style={styles.introImageStyle}
+                source={{
+                  uri:
+                    'asset:/image/cards/' +
+                    item.collection +
+                    '/' +
+                    item.word +
+                    '.jpeg',
+                }}
+              />
               <ScrollView>
                 <Text
                   style={{
+                    color: '#493e3e',
+                    fontSize: 20,
+                    fontStyle: 'italic',
                     textAlign: 'center',
                     paddingTop: 8,
                     paddingLeft: 8,
                   }}>
-                  Word Meaning {item.meaning} {'\n'}
-                  {'\n'} Lorem ipsum dolor sit amet, {'\n'}consectetur
-                  adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                  dolore magna aliqua. {'\n'}
-                  {'\n'}Ut enim ad minim veniam, {'\n'}
-                  {'\n'}quis nostrud exercitation ullamco laboris nisi ut
-                  aliquip ex ea commodo consequat. {'\n'}
-                  {'\n'}Duis aute irure dolor in reprehenderit in voluptate
-                  velit esse cillum dolore eu fugiat nulla pariatur. {'\n'}
-                  {'\n'}Excepteur sint occaecat cupidatat non proident, {'\n'}
-                  {'\n'}sunt in culpa qui officia deserunt mollit anim id est
-                  laborum.{'\n'}Duis aute irure dolor in reprehenderit in
-                  voluptate velit esse cillum dolore eu fugiat nulla pariatur.{' '}
-                  {'\n'}
-                  {'\n'}Excepteur sint occaecat cupidatat non proident, {'\n'}
-                  {'\n'}sunt in culpa qui officia deserunt mollit anim id est
-                  laborum.{'\n'}Ut enim ad minim veniam, {'\n'}
-                  {'\n'}quis nostrud exercitation ullamco laboris nisi ut
-                  aliquip ex ea commodo consequat. {'\n'}
-                  {'\n'}Duis aute irure dolor in reprehenderit in voluptate
-                  velit esse cillum dolore eu fugiat nulla pariatur. {'\n'}
-                  {'\n'}Excepteur sint occaecat cupidatat non proident, {'\n'}
-                  {'\n'}sunt in culpa qui officia deserunt mollit anim id est
-                  laborum.{'\n'}Duis aute irure dolor in reprehenderit in
-                  voluptate velit esse cillum dolore eu fugiat nulla pariatur.{' '}
-                  {'\n'}
-                  {'\n'}Excepteur sint occaecat cupidatat non proident, {'\n'}
-                  {'\n'}sunt in culpa qui officia deserunt mollit anim id est
-                  laborum.{'\n'}Ut enim ad minim veniam, {'\n'}
-                  {'\n'}quis nostrud exercitation ullamco laboris nisi ut
-                  aliquip ex ea commodo consequat. {'\n'}
-                  {'\n'}Duis aute irure dolor in reprehenderit in voluptate
-                  velit esse cillum dolore eu fugiat nulla pariatur. {'\n'}
-                  {'\n'}Excepteur sint occaecat cupidatat non proident, {'\n'}
-                  {'\n'}sunt in culpa qui officia deserunt mollit anim id est
-                  laborum.{'\n'}Duis aute irure dolor in reprehenderit in
-                  voluptate velit esse cillum dolore eu fugiat nulla pariatur.{' '}
-                  {'\n'}
-                  {'\n'}Excepteur sint occaecat cupidatat non proident, {'\n'}
-                  {'\n'}sunt in culpa qui officia deserunt mollit anim id est
-                  laborum.{'\n'}Ut enim ad minim veniam, {'\n'}
-                  {'\n'}quis nostrud exercitation ullamco laboris nisi ut
-                  aliquip ex ea commodo consequat. {'\n'}
-                  {'\n'}Duis aute irure dolor in reprehenderit in voluptate
-                  velit esse cillum dolore eu fugiat nulla pariatur. {'\n'}
-                  {'\n'}Excepteur sint occaecat cupidatat non proident, {'\n'}
-                  {'\n'}sunt in culpa qui officia deserunt mollit anim id est
-                  laborum.{'\n'}Duis aute irure dolor in reprehenderit in
-                  voluptate velit esse cillum dolore eu fugiat nulla pariatur.{' '}
-                  {'\n'}
-                  {'\n'}Excepteur sint occaecat cupidatat non proident, {'\n'}
-                  {'\n'}sunt in culpa qui officia deserunt mollit anim id est
-                  laborum.{'\n'}Ut enim ad minim veniam, {'\n'}
-                  {'\n'}quis nostrud exercitation ullamco laboris nisi ut
-                  aliquip ex ea commodo consequat. {'\n'}
-                  {'\n'}Duis aute irure dolor in reprehenderit in voluptate
-                  velit esse cillum dolore eu fugiat nulla pariatur. {'\n'}
-                  {'\n'}Excepteur sint occaecat cupidatat non proident, {'\n'}
-                  {'\n'}sunt in culpa qui officia deserunt mollit anim id est
-                  laborum.{'\n'}Duis aute irure dolor in reprehenderit in
-                  voluptate velit esse cillum dolore eu fugiat nulla pariatur.{' '}
-                  {'\n'}
-                  {'\n'}Excepteur sint occaecat cupidatat non proident, {'\n'}
-                  {'\n'}sunt in culpa qui officia deserunt mollit anim id est
-                  laborum.
-                  {val}
+                  {item.meaning}
                 </Text>
               </ScrollView>
             </Animated.View>
@@ -245,17 +196,20 @@ const FlashCard = props => {
       </TouchableWithoutFeedback>
     );
   };
-
-  return (
-    <AppIntroSlider
-      // data={props.words}
-      data={slides}
-      renderItem={RenderItem}
-      onDone={onDone}
-      showSkipButton={true}
-      onSkip={onSkip}
-    />
-  );
+  if (isData) {
+    return (
+      <AppIntroSlider
+        // data={props.words}
+        data={DATA}
+        renderItem={RenderItem}
+        onDone={onDone}
+        showSkipButton={true}
+        onSkip={onSkip}
+      />
+    );
+  } else {
+    return <ActivityIndicator />;
+  }
 };
 
 export default FlashCard;
@@ -267,6 +221,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
     justifyContent: 'center',
+    maxHeight: '100%',
   },
   titleStyle: {
     padding: 10,

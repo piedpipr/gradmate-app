@@ -22,16 +22,14 @@ export default class FlashCards extends React.Component {
             fontFamily: 'Rancho-Regular',
             fontSize: 80,
             color: 'white',
+            marginTop: 30,
           }}>
           Flashcards
         </Text>
         <Text style={styles.title}>SELECT EXAM TYPE</Text>
         <Image
           source={require('../../assets/icons/screen2.png')}
-          style={{
-            width: 350,
-            height: 350,
-          }}
+          style={styles.img}
         />
         <Separator />
         <View style={styles.cards}>
@@ -85,6 +83,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#febe29',
     alignItems: 'center',
     justifyContent: 'center',
+    maxHeight: '100%',
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   title: {
@@ -93,6 +92,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'white',
     marginBottom: 10,
+  },
+  img: {
+    maxWidth: '80%',
+    maxHeight: '40%',
   },
   ielts: {
     textAlign: 'center',
@@ -109,10 +112,11 @@ const styles = StyleSheet.create({
     color: '#3395ff',
   },
   cards: {
-    marginTop: 5,
+    marginTop: 10,
+    paddingTop: 0,
   },
 
   separator: {
-    marginVertical: 30,
+    marginVertical: '2%',
   },
 });

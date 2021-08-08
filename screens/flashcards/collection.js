@@ -76,7 +76,7 @@ export default function Gre(props) {
             textAlign: 'center',
             paddingTop: 30,
           }}>
-          GRE Collections
+          {props.route.params.data} Collections
         </Text>
         <FlatList
           data={CollData}

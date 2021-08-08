@@ -131,7 +131,7 @@ export default class Dashboard extends React.Component {
               }}>
               <Image
                 source={require('../assets/icons/user.png')}
-                style={{width: 140, height: 140, borderRadius: 70}}
+                style={styles.img}
               />
               <Text
                 style={{
@@ -216,14 +216,14 @@ export default class Dashboard extends React.Component {
                   {userphoto == null ? (
                     <Image
                       source={require('../assets/icons/user.png')}
-                      style={{width: 140, height: 140, borderRadius: 70}}
+                      style={styles.img}
                     />
                   ) : (
                     <Image
                       source={{
                         uri: userphoto,
                       }}
-                      style={{width: 140, height: 140, borderRadius: 70}}
+                      style={styles.img}
                     />
                   )}
                 </View>
@@ -243,7 +243,7 @@ export default class Dashboard extends React.Component {
                 style={{
                   marginTop: 10,
                   marginBottom: 80,
-                  paddingBottom: 10,
+                  paddingBottom: 0,
                   elevation: 0,
                   backgroundColor: 'rgba(251, 255, 255, 0.9)',
                 }}>
@@ -251,7 +251,7 @@ export default class Dashboard extends React.Component {
                 <PieChart
                   data={data}
                   width={screenWidth}
-                  height={220}
+                  height={180}
                   chartConfig={chartConfig}
                   accessor={'population'}
                   backgroundColor={'transparent'}
@@ -289,7 +289,7 @@ export default class Dashboard extends React.Component {
                 color: 'white',
                 paddingBottom: 0,
                 marginBottom: 0,
-                paddingTop: 30,
+                paddingTop: 20,
               }}>
               Dashboard
             </Text>
@@ -327,7 +327,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    maxHeight: '35%',
+    minHeight: 210,
   },
   containercardSm: {
     flex: 1,
@@ -338,6 +338,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignContent: 'center',
     justifyContent: 'center',
+  },
+  img: {
+    width: 140,
+    height: 140,
+    borderRadius: 70,
   },
   stats: {
     color: '#3395ff',
