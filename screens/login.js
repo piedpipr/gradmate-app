@@ -16,7 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 GoogleSignin.configure({
   webClientId:
-    'ADD YOUR FIREBASE WEB CLIENT ID/KEY',
+    'ADD YOUR FIREBASE WEB CLIENT ID/KEY HERE COPIED FROM FIREBASE',
 });
 
 const Separator = () => <View style={styles.separator} />;
